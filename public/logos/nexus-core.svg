@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2B78D4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(20, 35)">
+    <!-- Connected hexagon network -->
+    <path fill="url(#grad1)" d="M40 10L70 25V55L40 70L10 55V25L40 10Z"/>
+    <path fill="url(#grad1)" opacity="0.7" d="M80 30L110 45V75L80 90L50 75V45L80 30Z"/>
+    <path fill="url(#grad1)" opacity="0.4" d="M60 50L90 65V95L60 110L30 95V65L60 50Z"/>
+    <!-- Connection lines -->
+    <path stroke="#4A90E2" stroke-width="2" fill="none" d="M40 40L80 60M60 70L90 80"/>
+    <!-- Pulse circles -->
+    <circle cx="40" cy="40" r="4" fill="#fff">
+      <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="80" cy="60" r="4" fill="#fff">
+      <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <text x="120" y="85" font-family="'SF Pro Display', Arial, sans-serif" font-size="32" font-weight="bold" fill="#4A90E2">
+    NEXUS
+    <tspan x="120" y="115" font-size="24" fill="#2B78D4">CORE</tspan>
+  </text>
+</svg> 

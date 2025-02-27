@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="novaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0288D1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#01579B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="cloudGlow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(20, 35)" filter="url(#cloudGlow)">
+    <!-- Cloud Base -->
+    <path d="M30 50 
+             C30 35, 40 25, 55 25
+             C60 10, 80 15, 80 30
+             C95 25, 100 45, 90 55
+             C95 65, 85 75, 75 70
+             C70 80, 55 80, 50 70
+             C35 75, 25 65, 30 50Z" 
+          fill="url(#novaGrad)" opacity="0.9"/>
+    
+    <!-- Scale Elements -->
+    <g transform="translate(45, 40)">
+      <rect x="0" y="0" width="6" height="15" fill="#B3E5FC" rx="1">
+        <animate attributeName="height" values="15;25;15" dur="2s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="10" y="0" width="6" height="20" fill="#B3E5FC" rx="1">
+        <animate attributeName="height" values="20;30;20" dur="2s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="20" y="0" width="6" height="25" fill="#B3E5FC" rx="1">
+        <animate attributeName="height" values="25;35;25" dur="2s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    
+    <!-- Connection Lines -->
+    <path d="M40 45L60 45M40 55L60 55" 
+          stroke="#B3E5FC" stroke-width="1.5" opacity="0.6">
+      <animate attributeName="stroke-dasharray" values="0,150;150,0" dur="3s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Pulse Effect -->
+    <circle cx="55" cy="45" r="25" stroke="#0288D1" fill="none" opacity="0.2">
+      <animate attributeName="r" values="25;35;25" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <text x="120" y="85" font-family="'SF Pro Display', Arial, sans-serif" font-size="32" font-weight="bold" fill="#0288D1">
+    NOVA
+    <tspan x="120" y="115" font-size="24" fill="#01579B">SCALE</tspan>
+  </text>
+</svg> 

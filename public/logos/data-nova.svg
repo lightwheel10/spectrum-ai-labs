@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dataGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E88E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D47A1;stop-opacity:1" />
+    </linearGradient>
+    <filter id="dataGlow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(20, 35)" filter="url(#dataGlow)">
+    <!-- Data Streams -->
+    <path d="M10 40Q25 20,40 40Q55 60,70 40" 
+          stroke="url(#dataGrad)" fill="none" stroke-width="3">
+      <animate attributeName="d" 
+              values="M10 40Q25 20,40 40Q55 60,70 40;
+                     M10 40Q25 60,40 40Q55 20,70 40;
+                     M10 40Q25 20,40 40Q55 60,70 40"
+              dur="3s" repeatCount="indefinite"/>
+    </path>
+    <!-- Data Points -->
+    <g>
+      <circle cx="25" cy="30" r="4" fill="#1E88E5">
+        <animate attributeName="cy" values="30;50;30" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="40" cy="40" r="4" fill="#1E88E5">
+        <animate attributeName="cy" values="40;30;40" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="55" cy="50" r="4" fill="#1E88E5">
+        <animate attributeName="cy" values="50;30;50" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Visualization Grid -->
+    <path d="M10 60h60M10 50h60M10 40h60M10 30h60M10 20h60" 
+          stroke="#1E88E5" stroke-width="0.5" opacity="0.2"/>
+  </g>
+  <text x="120" y="85" font-family="'SF Pro Display', Arial, sans-serif" font-size="32" font-weight="bold" fill="#1E88E5">
+    DATA
+    <tspan x="120" y="115" font-size="24" fill="#0D47A1">NOVA</tspan>
+  </text>
+</svg> 

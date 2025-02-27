@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="apexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00BFA5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00796B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(20, 35)">
+    <!-- DNA Helix -->
+    <g transform="rotate(30, 40, 40)">
+      <path d="M20 20C40 30,60 30,80 20C60 40,40 40,20 60C40 50,60 50,80 60" 
+            fill="none" stroke="url(#apexGrad)" stroke-width="3" stroke-linecap="round">
+        <animate attributeName="d" 
+                values="M20 20C40 30,60 30,80 20C60 40,40 40,20 60C40 50,60 50,80 60;
+                       M20 60C40 50,60 50,80 60C60 40,40 40,20 20C40 30,60 30,80 20;
+                       M20 20C40 30,60 30,80 20C60 40,40 40,20 60C40 50,60 50,80 60"
+                dur="3s" repeatCount="indefinite"/>
+      </path>
+      <!-- Connection dots -->
+      <circle cx="30" cy="25" r="3" fill="#00BFA5">
+        <animate attributeName="cy" values="25;55;25" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="50" cy="35" r="3" fill="#00BFA5">
+        <animate attributeName="cy" values="35;45;35" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="70" cy="55" r="3" fill="#00BFA5">
+        <animate attributeName="cy" values="55;25;55" dur="3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Lab flask -->
+    <path d="M35 20L45 20L50 40L30 40Z" fill="url(#apexGrad)" opacity="0.6"/>
+  </g>
+  <text x="120" y="85" font-family="'SF Pro Display', Arial, sans-serif" font-size="32" font-weight="bold" fill="#00BFA5">
+    APEX
+    <tspan x="120" y="115" font-size="24" fill="#00796B">LABS</tspan>
+  </text>
+</svg> 

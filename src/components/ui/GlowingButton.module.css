@@ -1,0 +1,205 @@
+@property --border-angle-1 {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --border-angle-2 {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 90deg;
+}
+
+@property --border-angle-3 {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 180deg;
+}
+
+.glowing-button {
+  --border-size: 2px;
+  --border-radius: 0.75em;
+  --orange-bright: rgb(255, 140, 0);
+  --orange-dark: rgb(255, 90, 0);
+  color: white;
+  border: 0;
+  padding: var(--border-size);
+  display: flex;
+  width: max-content;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  background-image: 
+    conic-gradient(
+      from var(--border-angle-1) at 50% 50%,
+      black,
+      var(--orange-bright),
+      var(--orange-dark),
+      var(--orange-bright),
+      black
+    );
+  animation: rotateBackground 3s linear infinite;
+}
+
+.default {
+  font-size: calc(0.8rem + 1vmin);
+}
+
+.small {
+  font-size: 0.875rem;
+  --border-size: 1px;
+  --border-radius: 0.5em;
+}
+
+/* Hero button specific styles */
+.glowing-button.hero-button {
+  font-size: 0.9rem;
+  --border-size: 1.2px;
+}
+
+.glowing-button.hero-button .content {
+  padding: 0.6em 1.2em;
+}
+
+.glowing-button.hero-button.small {
+  font-size: 0.75rem;
+  --border-size: 1px;
+  width: auto;
+}
+
+.glowing-button.hero-button.small .content {
+  padding: 0.5em 1em;
+}
+
+.glowing-button .content {
+  background: black;
+  border-radius: calc(var(--border-radius) - var(--border-size));
+}
+
+.default .content {
+  padding: 1em 1.5em;
+}
+
+.small .content {
+  padding: 0.5em 1em;
+}
+
+@keyframes rotateBackground {
+  to { --border-angle-1: 360deg; }
+}
+
+@keyframes rotateBackground2 {
+  to { --border-angle-2: -270deg; }
+}
+
+@keyframes rotateBackground3 {
+  to { --border-angle-3: 540deg; }
+}
+
+@keyframes slowRotateBackground {
+  0% { --border-angle-1: 0deg; }
+  50% { --border-angle-1: 180deg; }
+  100% { --border-angle-1: 360deg; }
+}
+
+/* Static button styles */
+.static {
+  --border-size: 2px;
+  --border-radius: 0.75em;
+  --orange-bright: rgb(255, 140, 0);
+  --orange-dark: rgb(255, 90, 0);
+  color: white;
+  border: 2px solid black !important;
+  border-bottom: none !important;
+  background-image: 
+    linear-gradient(to right,
+      transparent 0%,
+      transparent 10%,
+      var(--orange-bright) 25%,
+      #FF4500 50%,
+      var(--orange-bright) 75%,
+      transparent 90%,
+      transparent 100%
+    ) !important;
+  background-size: 100% 3px !important;
+  background-position: bottom !important;
+  background-repeat: no-repeat !important;
+  animation: none !important;
+  position: relative;
+  padding: 0;
+  border-radius: var(--border-radius);
+  display: flex;
+  width: max-content;
+}
+
+.static .content {
+  margin: 1px;
+}
+
+.static .glow {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 10%;
+  right: 10%;
+  height: 8px;
+  background: linear-gradient(to right,
+    transparent 0%,
+    var(--orange-bright) 20%,
+    var(--orange-bright) 80%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  opacity: 0.5;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.static:hover {
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.static:hover .glow {
+  opacity: 0.8;
+  filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+/* Work with us button styles */
+.work-with-us {
+  --border-size: 2px;
+  --border-radius: 0.75em;
+  --orange-bright: rgb(255, 140, 0);
+  --orange-dark: rgb(255, 90, 0);
+  color: white;
+  border: 0;
+  padding: var(--border-size);
+  display: flex;
+  width: max-content;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  background-image: 
+    conic-gradient(
+      from var(--border-angle-1) at 50% 50%,
+      black 0%,
+      black 10%,
+      var(--orange-bright) 20%,
+      #FF4500 50%,
+      var(--orange-bright) 80%,
+      black 90%,
+      black 100%
+    ) !important;
+  animation: slowRotateBackground 6s ease-in-out infinite !important;
+  transition: transform 0.3s ease-in-out;
+}
+
+.work-with-us:hover {
+  transform: scale(1.05);
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  .glowing-button {
+    --orange-bright: color(display-p3 1 0.549 0);
+    --orange-dark: color(display-p3 1 0.353 0);
+  }
+} 

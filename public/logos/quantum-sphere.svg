@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="quantumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#673AB7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(20, 35)">
+    <!-- Quantum orbits -->
+    <g transform="rotate(45, 40, 40)">
+      <ellipse cx="40" cy="40" rx="30" ry="10" fill="none" stroke="url(#quantumGrad)" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="4s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="40" cy="40" rx="30" ry="10" fill="none" stroke="url(#quantumGrad)" stroke-width="2" transform="rotate(60, 40, 40)">
+        <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="-360 40 40" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+    <!-- Core sphere -->
+    <circle cx="40" cy="40" r="8" fill="url(#quantumGrad)">
+      <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Quantum particles -->
+    <circle cx="40" cy="10" r="4" fill="#9C27B0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="70" cy="40" r="4" fill="#673AB7">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <text x="120" y="85" font-family="'SF Pro Display', Arial, sans-serif" font-size="32" font-weight="bold" fill="#9C27B0">
+    QUANTUM
+    <tspan x="120" y="115" font-size="24" fill="#673AB7">SPHERE</tspan>
+  </text>
+</svg> 
