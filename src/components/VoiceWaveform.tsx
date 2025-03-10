@@ -81,8 +81,13 @@ const VoiceWaveform = () => {
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         
-        const barPositionLeft = centerX - (i + 1) * spacing - (WIDTH < 300 ? 10 : 15);
-        const barPositionRight = centerX + i * spacing + (WIDTH < 300 ? 10 : 15);
+        // Calculate offset based on screen width proportion
+        const offsetMultiplier = WIDTH < 300 ? WIDTH / 300 : 1;
+        const baseOffset = WIDTH < 300 ? 10 : 15;
+        const adjustedOffset = Math.round(baseOffset * offsetMultiplier);
+        
+        const barPositionLeft = centerX - (i + 1) * spacing - adjustedOffset;
+        const barPositionRight = centerX + i * spacing + adjustedOffset;
         
         ctx.fillRect(barPositionLeft, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
         ctx.fillRect(barPositionRight, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
@@ -105,7 +110,7 @@ const VoiceWaveform = () => {
     <div ref={containerRef} className="absolute inset-0">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full -z-10"
       />
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div 
