@@ -2,13 +2,13 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const SurveyGraph = () => (
-  <div className="mt-2 space-y-1.5">
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+  <div className="mt-1 sm:mt-2 space-y-1 sm:space-y-1.5">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">User Experience</span>
         <span className="text-white">92%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '92%' }}
@@ -17,12 +17,12 @@ const SurveyGraph = () => (
         />
       </div>
     </div>
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">Customer Support</span>
         <span className="text-white">88%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '88%' }}
@@ -31,12 +31,12 @@ const SurveyGraph = () => (
         />
       </div>
     </div>
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">Product Quality</span>
         <span className="text-white">95%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '95%' }}
@@ -45,18 +45,18 @@ const SurveyGraph = () => (
         />
       </div>
     </div>
-    <div className="mt-1 text-[10px] text-white/40 text-center">Based on 2,847 responses</div>
+    <div className="mt-0.5 sm:mt-1 text-[8px] sm:text-[10px] text-white/40 text-center">Based on 2,847 responses</div>
   </div>
 );
 
 const UXBreakdownGraph = () => (
-  <div className="mt-2 space-y-1.5">
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+  <div className="mt-1 sm:mt-2 space-y-1 sm:space-y-1.5">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">Navigation</span>
         <span className="text-white">96%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '96%' }}
@@ -65,12 +65,12 @@ const UXBreakdownGraph = () => (
         />
       </div>
     </div>
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">Mobile Experience</span>
         <span className="text-white">94%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '94%' }}
@@ -79,12 +79,12 @@ const UXBreakdownGraph = () => (
         />
       </div>
     </div>
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
+    <div className="space-y-0.5 sm:space-y-1">
+      <div className="flex justify-between text-[10px] sm:text-xs">
         <span className="text-white/60">Load Times</span>
         <span className="text-white">89%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-black/40 overflow-hidden">
+      <div className="h-1 sm:h-1.5 rounded-full bg-black/40 overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '89%' }}
@@ -165,7 +165,7 @@ const ChatSimulation = () => {
   };
 
   const Avatar = ({ isAI = false }: { isAI?: boolean }) => (
-    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-white/10">
+    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden flex-shrink-0 border border-white/10">
       {isAI ? (
         <Image 
           src="/logos/ai-assistant.svg"
@@ -184,11 +184,11 @@ const ChatSimulation = () => {
 
   return (
     <>
-      <div className="h-[240px] relative bg-black/80 border border-white/10 p-3 overflow-hidden">
+      <div className="h-[200px] sm:h-[240px] relative bg-black/80 border border-white/10 p-2 sm:p-3 overflow-hidden">
         <motion.div
           variants={containerVariants}
           animate="animate"
-          className="space-y-1.5"
+          className="space-y-1 sm:space-y-1.5"
         >
           {/* First set of messages */}
           {messages.map((message, index) => (
@@ -199,10 +199,10 @@ const ChatSimulation = () => {
               transition={{ duration: 0.5, delay: index * 0.5 }}
               className={`flex ${message.isAI ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`flex items-start gap-2 max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-start gap-1 sm:gap-2 max-w-[85%] sm:max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
                 <Avatar isAI={message.isAI} />
-                <div className={`${message.isAI ? 'bg-[#E5855E]/20' : 'bg-white/10'} rounded-2xl p-2`}>
-                  <div className="text-white/80 text-sm">{message.text}</div>
+                <div className={`${message.isAI ? 'bg-[#E5855E]/20' : 'bg-white/10'} rounded-xl sm:rounded-2xl p-1.5 sm:p-2`}>
+                  <div className="text-white/80 text-xs sm:text-sm">{message.text}</div>
                   {message.graph && message.graph}
                 </div>
               </div>
@@ -210,19 +210,19 @@ const ChatSimulation = () => {
           ))}
 
           {/* Duplicate all messages for seamless loop */}
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             {messages.map((message, index) => (
               <motion.div 
                 key={`dup-${index}`}
                 initial={{ opacity: 0, x: message.isAI ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.5 }}
-                className={`flex ${message.isAI ? 'justify-end' : 'justify-start'} mb-1.5`}
+                className={`flex ${message.isAI ? 'justify-end' : 'justify-start'} mb-1 sm:mb-1.5`}
               >
-                <div className={`flex items-start gap-2 max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-start gap-1 sm:gap-2 max-w-[85%] sm:max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
                   <Avatar isAI={message.isAI} />
-                  <div className={`${message.isAI ? 'bg-[#E5855E]/20' : 'bg-white/10'} rounded-2xl p-2`}>
-                    <div className="text-white/80 text-sm">{message.text}</div>
+                  <div className={`${message.isAI ? 'bg-[#E5855E]/20' : 'bg-white/10'} rounded-xl sm:rounded-2xl p-1.5 sm:p-2`}>
+                    <div className="text-white/80 text-xs sm:text-sm">{message.text}</div>
                     {message.graph && message.graph}
                   </div>
                 </div>
@@ -231,7 +231,7 @@ const ChatSimulation = () => {
           </div>
         </motion.div>
       </div>
-      <div className="text-[#E5855E] text-center py-3 text-sm">
+      <div className="text-[#E5855E] text-center py-2 sm:py-3 text-xs sm:text-sm">
         AI Assistant
       </div>
     </>

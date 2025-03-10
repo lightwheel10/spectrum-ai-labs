@@ -8,17 +8,28 @@ interface GlowingButtonProps {
   onClick?: () => void;
   size?: 'small' | 'default';
   skipCalendar?: boolean;
+  fullWidth?: boolean;
 }
 
-export const GlowingButton = ({ children, className = '', onClick, size = 'default', ...rest }: GlowingButtonProps) => {
+export const GlowingButton = ({ 
+  children, 
+  className = '', 
+  onClick, 
+  size = 'default', 
+  fullWidth = false,
+  ...rest 
+}: GlowingButtonProps) => {
   // Split the className into an array and map CSS module classes
   const cssModuleClasses = className.split(' ').map(cls => styles[cls] || cls).join(' ');
   const isStatic = className.includes('static');
   
+  // Add fullWidth class if needed
+  const fullWidthClass = fullWidth ? styles.fullWidth : '';
+  
   return (
     <button
       onClick={onClick}
-      className={`${styles['glowing-button']} ${styles[size]} ${cssModuleClasses}`}
+      className={`${styles['glowing-button']} ${styles[size]} ${fullWidthClass} ${cssModuleClasses}`}
       style={{
         '--border-angle-1': '0deg',
       } as CSSProperties}

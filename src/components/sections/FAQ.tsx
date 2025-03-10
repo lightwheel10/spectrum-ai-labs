@@ -12,7 +12,7 @@ interface FAQItemProps {
 const FAQItem = ({ question, answer, isOpen, onClick }: FAQItemProps) => {
   return (
     <motion.div 
-      className="border-b border-gray-800 py-6"
+      className="border-b border-gray-800 py-4 sm:py-6"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -22,13 +22,13 @@ const FAQItem = ({ question, answer, isOpen, onClick }: FAQItemProps) => {
         className="flex w-full items-center justify-between text-left"
         onClick={onClick}
       >
-        <h3 className="text-xl font-medium text-white">{question}</h3>
+        <h3 className="text-lg sm:text-xl font-medium text-white pr-4">{question}</h3>
         <motion.div
           animate={{ rotate: isOpen ? 90 : 0 }}
           transition={{ duration: 0.3 }}
-          className="text-white/80"
+          className="text-white/80 flex-shrink-0"
         >
-          <FiArrowUpRight className="h-6 w-6" />
+          <FiArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
         </motion.div>
       </button>
       
@@ -41,7 +41,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }: FAQItemProps) => {
         transition={{ duration: 0.3 }}
         className="overflow-hidden"
       >
-        <p className="mt-4 text-gray-400">{answer}</p>
+        <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-400">{answer}</p>
       </motion.div>
     </motion.div>
   );
@@ -78,13 +78,13 @@ const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+    <section id="faq" className="py-16 sm:py-20 md:py-24 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-24">
           {/* Left Column */}
           <div>
             <div className="mb-4">
-              <div className="inline-block px-3 py-1 text-sm font-medium text-[#FF9500] bg-[#FF9500]/10 rounded-md mb-6">
+              <div className="inline-block px-3 py-1 text-sm font-medium text-[#FF9500] bg-[#FF9500]/10 rounded-md mb-4 sm:mb-6">
                 FAQ
               </div>
             </div>
@@ -95,8 +95,8 @@ const FAQ = () => {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-7xl font-bold text-white mb-6">FAQ</h2>
-              <p className="text-gray-400 max-w-xl">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6">FAQ</h2>
+              <p className="text-gray-400 max-w-xl text-sm sm:text-base">
                 We&apos;ve gone ahead and answered the questions we&apos;re asked most often.
                 Can&apos;t find what you&apos;re looking for? Feel free to reach out to us through
                 the contact form above!
@@ -105,7 +105,7 @@ const FAQ = () => {
           </div>
           
           {/* Right Column */}
-          <div className="lg:pt-16">
+          <div className="md:pt-12 lg:pt-16">
             <div className="space-y-0">
               {faqItems.map((item, index) => (
                 <FAQItem

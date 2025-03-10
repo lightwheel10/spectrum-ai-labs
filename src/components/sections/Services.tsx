@@ -67,21 +67,21 @@ const services: Service[] = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 relative">
+    <section id="services" className="py-20 relative overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <span className="text-[#E5855E] text-sm">Services</span>
-          <h2 className="text-6xl font-normal text-white mt-4">Our Services</h2>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal text-white mt-4">Our Services</h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {services.map((service) => (
             <div
               key={service.title}
-              className="p-8 rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm h-[440px] overflow-hidden"
+              className="p-6 sm:p-8 rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm h-auto sm:h-[440px] overflow-hidden"
             >
-              <h3 className="text-4xl font-normal text-white mb-4">{service.title}</h3>
-              <p className="text-white/60 mb-6 text-lg leading-relaxed">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white mb-3 sm:mb-4">{service.title}</h3>
+              <p className="text-white/60 mb-4 sm:mb-6 text-base sm:text-lg leading-relaxed">
                 {service.desc}
               </p>
 
@@ -92,24 +92,24 @@ const Services = () => {
               )}
 
               {service.demo?.type === "voice" && (
-                <div className="rounded-lg overflow-hidden">
-                  <div className="h-[240px] relative">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center">
+                  <div className="h-[180px] sm:h-[240px] relative w-full max-w-[280px] mx-auto">
                     <VoiceWaveform />
                   </div>
-                  <div className="text-[#E5855E] text-center py-3 text-sm">
+                  <div className="text-[#E5855E] text-center py-2 sm:py-3 text-sm">
                     Voice Agent
                   </div>
                 </div>
               )}
 
               {service.steps && (
-                <div className="overflow-hidden">
+                <div className="overflow-hidden sm:h-[320px] h-[270px]">
                   <WorkflowAnimation steps={service.steps} />
                 </div>
               )}
 
               {service.metrics && (
-                <div>
+                <div className="h-[200px] sm:h-auto">
                   <MetricsChart />
                 </div>
               )}

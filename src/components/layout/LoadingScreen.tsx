@@ -28,7 +28,7 @@ const LoadingMessage = memo(({ message }: { message: string }) => (
     initial="hidden"
     animate="visible"
     exit="exit"
-    className="text-sm font-medium text-white/70 inline-block"
+    className="text-xs sm:text-sm font-medium text-white/70 inline-block"
   >
     {message}
   </motion.span>
@@ -60,7 +60,7 @@ const LoadingScreen = () => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4"
     >
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
@@ -69,7 +69,7 @@ const LoadingScreen = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
-          className="text-7xl font-medium mb-12 tracking-[-0.02em] leading-[1.1]"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-6 sm:mb-8 md:mb-12 tracking-[-0.02em] leading-[1.1] text-center"
           style={{
             color: '#fff',
             textShadow: '0 0 80px rgba(255,255,255,0.5)',
@@ -78,12 +78,12 @@ const LoadingScreen = () => {
           <span className="bg-gradient-to-r from-[#FF4500] to-[#FF8C00] bg-clip-text text-transparent">
             Spectrum
           </span>
-          <span className="text-white mx-3">AI</span>
+          <span className="text-white mx-2 sm:mx-3">AI</span>
           <span className="text-white">Labs</span>
         </motion.h1>
 
         {/* Loading Bar */}
-        <div className="relative w-64">
+        <div className="relative w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
           <motion.div 
             className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -108,7 +108,7 @@ const LoadingScreen = () => {
 
           {/* Loading Text */}
           <motion.div
-            className="absolute -bottom-8 left-0 right-0 text-center h-6" // Fixed height to prevent jumping
+            className="absolute -bottom-6 sm:-bottom-8 left-0 right-0 text-center h-5 sm:h-6" // Fixed height to prevent jumping
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >

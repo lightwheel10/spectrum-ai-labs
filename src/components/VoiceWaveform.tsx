@@ -35,9 +35,9 @@ const VoiceWaveform = () => {
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
       
       const centerX = WIDTH / 2;
-      const barWidth = 3;
-      const gap = 12;
-      const maxBars = 11;
+      const barWidth = WIDTH < 300 ? 2 : 3;
+      const gap = WIDTH < 300 ? 8 : 12;
+      const maxBars = WIDTH < 300 ? 7 : 11;
       
       timeRef.current += 0.016;
       const time = timeRef.current;
@@ -53,12 +53,18 @@ const VoiceWaveform = () => {
         const wave2 = Math.sin(timePhase * 0.5) * 10;
         const variation = (wave1 + wave2) * (0.6 + Math.sin(time * 0.5) * 0.4);
         
-        const barHeight = Math.max(20, baseHeight + variation);
+        const barHeight = Math.max(WIDTH < 300 ? 16 : 20, baseHeight + variation);
         
         const spacing = barWidth + gap;
-        const centerGap = 50;
-        const leftX = centerX - (i + 1) * spacing - centerGap;
-        const rightX = centerX + i * spacing + centerGap;
+        // const centerGap = WIDTH < 300 ? 30 : 50;  // Defined but not used
+        
+        // const indexOffset = maxBars / 2;  // Defined but not used
+        // const position = i - indexOffset;  // Defined but not used
+        
+        // These variables are defined but not used
+        // const x = centerX + position * spacing;
+        // const leftX = centerX - (maxBars - i) * spacing - centerGap;
+        // const rightX = centerX + i * spacing + centerGap;
         
         const gradient = ctx.createLinearGradient(0, HEIGHT / 2 - barHeight, 0, HEIGHT / 2 + barHeight);
         gradient.addColorStop(0, 'rgba(239, 68, 68, 0)');
@@ -75,8 +81,11 @@ const VoiceWaveform = () => {
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         
-        ctx.fillRect(leftX, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
-        ctx.fillRect(rightX, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
+        const barPositionLeft = centerX - (i + 1) * spacing - (WIDTH < 300 ? 10 : 15);
+        const barPositionRight = centerX + i * spacing + (WIDTH < 300 ? 10 : 15);
+        
+        ctx.fillRect(barPositionLeft, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
+        ctx.fillRect(barPositionRight, HEIGHT / 2 - barHeight / 2, barWidth, barHeight);
       }
       
       animationRef.current = requestAnimationFrame(draw);
@@ -100,7 +109,7 @@ const VoiceWaveform = () => {
       />
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div 
-          className="absolute w-40 h-40 rounded-full bg-[#E5855E]"
+          className="absolute w-28 sm:w-40 h-28 sm:h-40 rounded-full bg-[#E5855E]"
           animate={{
             opacity: [0.03, 0.08, 0.03],
             scale: [1, 1.1, 1],
@@ -114,7 +123,7 @@ const VoiceWaveform = () => {
         />
         
         <motion.div
-          className="relative w-28 h-28 rounded-full border border-[#E5855E]/30"
+          className="relative w-20 sm:w-28 h-20 sm:h-28 rounded-full border border-[#E5855E]/30 z-10"
           animate={{
             scale: [1, 1.02, 1],
             boxShadow: [
@@ -132,7 +141,7 @@ const VoiceWaveform = () => {
           <motion.div 
             className="absolute inset-0 rounded-full bg-[#E5855E]"
             animate={{
-              opacity: [0.05, 0.1, 0.05],
+              opacity: [0.05, 0.2, 0.05],
               filter: ["blur(3px)", "blur(5px)", "blur(3px)"]
             }}
             transition={{
@@ -143,7 +152,7 @@ const VoiceWaveform = () => {
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.svg 
-              className="w-10 h-10 text-white"
+              className="w-8 h-8 sm:w-10 sm:h-10 text-white"
               viewBox="0 0 24 24" 
               fill="none"
               animate={{

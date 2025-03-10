@@ -137,7 +137,7 @@ const AnimatedBackground = () => {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-0 bg-[#0A0A0A]">
+    <div className="fixed inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
       {/* Background Gradient */}
       <div 
         className="absolute inset-0"

@@ -39,7 +39,7 @@ const teamMembers = [
 
 const About = () => {
   return (
-    <section className="relative py-12" id="about">
+    <section className="relative py-12 overflow-x-hidden" id="about">
       <div className="max-w-2xl mx-auto px-4">
         <div className="flex justify-center mb-6">
           <span className="text-[#E5855E] text-sm">About us</span>
@@ -47,13 +47,13 @@ const About = () => {
         
         <div className="space-y-3">
           <p className="text-3xl font-medium text-white leading-tight flex items-center gap-2">Hi, we&apos;re Spectrum AI Labs <Star /></p>
-          <div className="text-3xl font-medium text-white leading-tight">
-            <p className="inline">We craft cutting edge AI solutions to make organizations more competitive. We do so with a motivated team</p>
-            <span className="inline-flex mx-4 align-middle">
+          <div className="text-3xl sm:text-3xl text-xl font-medium text-white leading-tight">
+            <p className="inline sm:inline block mb-2 sm:mb-0">We craft cutting edge AI solutions to make organizations more competitive. We do so with a motivated team</p>
+            <span className="inline-flex sm:mx-4 mx-0 align-middle sm:inline-flex flex justify-center my-2 sm:my-0">
               {teamMembers.map((member) => (
                 <div
                   key={member.id}
-                  className="relative w-12 h-12 rounded-full border-2 border-black overflow-hidden -ml-3 first:ml-0"
+                  className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-black overflow-hidden -ml-3 first:ml-0"
                 >
                   <Image
                     src={member.image}
@@ -65,7 +65,7 @@ const About = () => {
                 </div>
               ))}
             </span>
-            <p className="inline">of 9 experts focused on building world-class solutions.</p>
+            <p className="inline sm:inline block mt-2 sm:mt-0">of 6 experts focused on building world-class solutions.</p>
           </div>
         </div>
       </div>

@@ -93,11 +93,11 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-full"
+                className="w-full overflow-x-hidden"
               >
                 <motion.main 
                   key="main" 
-                  className="min-h-screen relative z-10"
+                  className="min-h-screen relative z-10 overflow-x-hidden"
                 >
                   <Navbar />
                   
