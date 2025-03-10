@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const VoiceWaveform = () => {
@@ -6,38 +6,74 @@ const VoiceWaveform = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
   const timeRef = useRef(0);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
-    if (!canvasRef.current || !containerRef.current) return;
+    // Check if we're on a mobile device initially
+    const checkMobileView = () => {
+      const mobileBreakpoint = 768; // Standard tablet/mobile breakpoint
+      setIsMobileView(window.innerWidth < mobileBreakpoint);
+    };
+    
+    checkMobileView();
+    window.addEventListener('resize', checkMobileView);
+    window.addEventListener('orientationchange', checkMobileView);
+
+    return () => {
+      window.removeEventListener('resize', checkMobileView);
+      window.removeEventListener('orientationchange', checkMobileView);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Skip canvas animation for mobile
+    if (isMobileView || !canvasRef.current || !containerRef.current) return;
 
     const resizeCanvas = () => {
       const container = containerRef.current;
       if (!container || !canvasRef.current) return;
       
       const { width, height } = container.getBoundingClientRect();
-      canvasRef.current.width = width * window.devicePixelRatio;
-      canvasRef.current.height = height * window.devicePixelRatio;
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Set canvas size accounting for device pixel ratio
+      canvasRef.current.width = width * dpr;
+      canvasRef.current.height = height * dpr;
       canvasRef.current.style.width = `${width}px`;
       canvasRef.current.style.height = `${height}px`;
+      
+      // Get context and set scale immediately after resize
+      const ctx = canvasRef.current.getContext('2d');
+      if (ctx) {
+        ctx.scale(dpr, dpr);
+      }
     };
 
     resizeCanvas();
+    
+    // Listen to both resize and orientationchange events
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('orientationchange', resizeCanvas);
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d')!;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     const draw = () => {
-      const WIDTH = canvas.width / window.devicePixelRatio;
-      const HEIGHT = canvas.height / window.devicePixelRatio;
+      if (!canvas || !ctx) return;
+      
+      const WIDTH = canvas.width / (window.devicePixelRatio || 1);
+      const HEIGHT = canvas.height / (window.devicePixelRatio || 1);
       
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
       
       const centerX = WIDTH / 2;
-      const barWidth = WIDTH < 300 ? 2 : 3;
-      const gap = WIDTH < 300 ? 8 : 12;
-      const maxBars = WIDTH < 300 ? 7 : 11;
+      
+      // Base size calculations on viewport width for better responsiveness
+      const isSmallScreen = WIDTH < 375;
+      const barWidth = isSmallScreen ? 2 : 3;
+      const gap = isSmallScreen ? 8 : 12;
+      const maxBars = isSmallScreen ? 7 : 11;
       
       timeRef.current += 0.016;
       const time = timeRef.current;
@@ -53,18 +89,9 @@ const VoiceWaveform = () => {
         const wave2 = Math.sin(timePhase * 0.5) * 10;
         const variation = (wave1 + wave2) * (0.6 + Math.sin(time * 0.5) * 0.4);
         
-        const barHeight = Math.max(WIDTH < 300 ? 16 : 20, baseHeight + variation);
+        const barHeight = Math.max(isSmallScreen ? 16 : 20, baseHeight + variation);
         
         const spacing = barWidth + gap;
-        // const centerGap = WIDTH < 300 ? 30 : 50;  // Defined but not used
-        
-        // const indexOffset = maxBars / 2;  // Defined but not used
-        // const position = i - indexOffset;  // Defined but not used
-        
-        // These variables are defined but not used
-        // const x = centerX + position * spacing;
-        // const leftX = centerX - (maxBars - i) * spacing - centerGap;
-        // const rightX = centerX + i * spacing + centerGap;
         
         const gradient = ctx.createLinearGradient(0, HEIGHT / 2 - barHeight, 0, HEIGHT / 2 + barHeight);
         gradient.addColorStop(0, 'rgba(239, 68, 68, 0)');
@@ -81,10 +108,10 @@ const VoiceWaveform = () => {
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         
-        // Calculate offset based on screen width proportion
-        const offsetMultiplier = WIDTH < 300 ? WIDTH / 300 : 1;
-        const baseOffset = WIDTH < 300 ? 10 : 15;
-        const adjustedOffset = Math.round(baseOffset * offsetMultiplier);
+        // Scale offset proportionally to screen width
+        const screenRatio = Math.max(0.5, Math.min(1, WIDTH / 500));
+        const baseOffset = isSmallScreen ? 8 : 15;
+        const adjustedOffset = Math.round(baseOffset * screenRatio);
         
         const barPositionLeft = centerX - (i + 1) * spacing - adjustedOffset;
         const barPositionRight = centerX + i * spacing + adjustedOffset;
@@ -100,18 +127,21 @@ const VoiceWaveform = () => {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('orientationchange', resizeCanvas);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [isMobileView]);
 
   return (
     <div ref={containerRef} className="absolute inset-0">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full -z-10"
-      />
+      {!isMobileView && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full -z-10"
+        />
+      )}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div 
           className="absolute w-28 sm:w-40 h-28 sm:h-40 rounded-full bg-[#E5855E]"
