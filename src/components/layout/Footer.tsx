@@ -68,12 +68,6 @@ const Footer = () => {
               <Link href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
                 Youtube
               </Link>
-              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                X/Twitter
-              </Link>
-              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                Instagram
-              </Link>
             </div>
           </div>
 
@@ -86,6 +80,9 @@ const Footer = () => {
               </Link>
               <Link href="/privacy" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
                 Privacy policy
+              </Link>
+              <Link href="/refund" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+                Refund policy
               </Link>
             </div>
           </div>
