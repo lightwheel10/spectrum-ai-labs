@@ -15,13 +15,18 @@ export const GradientButton = ({ children, href, className = '', showArrow = fal
     const buttonElement = buttonRef.current;
     if (!buttonElement) return;
 
+    let rafId: number;
     const updateAnimation = () => {
       const angle = (parseFloat(buttonElement.style.getPropertyValue("--angle") || "0") + 1) % 360;
       buttonElement.style.setProperty("--angle", `${angle}deg`);
-      requestAnimationFrame(updateAnimation);
+      rafId = requestAnimationFrame(updateAnimation);
     };
 
-    requestAnimationFrame(updateAnimation);
+    rafId = requestAnimationFrame(updateAnimation);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const content = (
