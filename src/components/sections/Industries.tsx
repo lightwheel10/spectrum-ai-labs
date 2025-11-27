@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaShoppingCart, FaHospital, FaMicrophone } from 'react-icons/fa';
 import { BiBuildingHouse } from 'react-icons/bi';
 import { GiScales } from 'react-icons/gi';
@@ -107,20 +107,43 @@ interface SolutionVisualProps {
 }
 
 const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
   const [waveform, setWaveform] = useState<number[]>(getIndustryWaveform(industry));
   const [messageIndex, setMessageIndex] = useState(0);
   const [toolIndex, setToolIndex] = useState(0);
   const currentChat = industryChats[industry];
   const currentTools = industryTools[industry];
 
+  // Intersection Observer to pause animations when off-screen
   useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // Trigger when at least 10% visible
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Only run animations when visible
+    if (!isVisible) return;
+
     if (type === 'voice') {
       const interval = setInterval(() => {
         setWaveform(getIndustryWaveform(industry));
       }, 100);
       return () => clearInterval(interval);
     }
-    
+
     if (type === 'chat') {
       const interval = setInterval(() => {
         setMessageIndex((prev) => (prev + 1) % currentChat.length);
@@ -134,7 +157,7 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
       }, 1500);
       return () => clearInterval(interval);
     }
-  }, [type, industry, currentChat.length, currentTools.length]);
+  }, [type, industry, currentChat.length, currentTools.length, isVisible]);
 
   // Add resize handler to update waveform when screen size changes
   useEffect(() => {
@@ -150,7 +173,7 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
 
   if (type === 'chat') {
     return (
-      <div className="bg-black/80 rounded-xl p-3 sm:p-4 h-[100px] sm:h-[120px] md:h-[140px] overflow-hidden backdrop-blur-sm relative">
+      <div ref={containerRef} className="bg-black/80 rounded-xl p-3 sm:p-4 h-[100px] sm:h-[120px] md:h-[140px] overflow-hidden backdrop-blur-sm relative">
         {/* Messages container */}
         <div className="h-full flex flex-col justify-center space-y-2 sm:space-y-3">
           {currentChat.map((msg, idx) => (
@@ -205,7 +228,7 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
 
   if (type === 'voice') {
     return (
-      <div className="bg-black/95 rounded-2xl p-4 sm:p-6 md:p-8 h-[100px] sm:h-[120px] md:h-[140px] flex items-center justify-center backdrop-blur-sm">
+      <div ref={containerRef} className="bg-black/95 rounded-2xl p-4 sm:p-6 md:p-8 h-[100px] sm:h-[120px] md:h-[140px] flex items-center justify-center backdrop-blur-sm">
         <div className="flex items-center gap-[2px] sm:gap-[3px] h-16 sm:h-20 md:h-24">
           {waveform.map((height, idx) => (
             <motion.div
@@ -226,7 +249,7 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
 
   if (type === 'automation') {
     return (
-      <div className="bg-black/95 rounded-2xl p-4 sm:p-6 md:p-8 h-[100px] sm:h-[120px] md:h-[140px] backdrop-blur-sm overflow-hidden">
+      <div ref={containerRef} className="bg-black/95 rounded-2xl p-4 sm:p-6 md:p-8 h-[100px] sm:h-[120px] md:h-[140px] backdrop-blur-sm overflow-hidden">
         <div className="relative h-full flex items-center justify-center">
           <div className="relative w-[150px] sm:w-[180px] md:w-[200px] h-[70px] sm:h-[80px] md:h-[90px] flex items-center justify-center">
             {currentTools.map((tool, index) => {

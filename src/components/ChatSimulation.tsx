@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 const SurveyGraph = () => (
   <div className="mt-1 sm:mt-2 space-y-1 sm:space-y-1.5">
@@ -151,13 +152,34 @@ const messages = [
 ];
 
 const ChatSimulation = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Intersection Observer to pause animation when off-screen
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // Trigger when at least 10% visible
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const containerVariants = {
     animate: {
-      y: [0, -1400],
+      y: isVisible ? [0, -1400] : 0, // Only animate when visible
       transition: {
         duration: 30,
         delay: 0,
-        repeat: Infinity,
+        repeat: isVisible ? Infinity : 0, // Only repeat when visible
         repeatDelay: 0,
         ease: "linear"
       }
@@ -184,7 +206,7 @@ const ChatSimulation = () => {
 
   return (
     <>
-      <div className="h-[200px] sm:h-[240px] relative bg-black/80 border border-white/10 p-2 sm:p-3 overflow-hidden">
+      <div ref={containerRef} className="h-[200px] sm:h-[240px] relative bg-black/80 border border-white/10 p-2 sm:p-3 overflow-hidden">
         <motion.div
           variants={containerVariants}
           animate="animate"
