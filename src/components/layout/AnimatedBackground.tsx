@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 
 interface Point {
   x: number;
@@ -24,9 +24,11 @@ const NUM_DECORATIVE_LINES = 8; // Restored original value
 const NUM_STARS = 20; // Restored original value
 
 const AnimatedBackground = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [points, setPoints] = useState<Point[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   // Memoize the resize handler to prevent recreation on each render
   const handleResize = useCallback(() => {
@@ -36,10 +38,28 @@ const AnimatedBackground = () => {
     });
   }, []);
 
+  // Intersection Observer to pause animation when off-screen
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // Trigger when at least 10% visible
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     // Only run client-side
     if (typeof window === 'undefined') return;
-    
+
     setDimensions({
       width: window.innerWidth,
       height: window.innerHeight
@@ -53,19 +73,22 @@ const AnimatedBackground = () => {
   // Generate initial points - memoized to only run when dimensions change
   useEffect(() => {
     if (!mounted || dimensions.width === 0) return;
-    
+
     const newPoints = Array.from({ length: NUM_POINTS }, () => ({
       x: Math.random() * dimensions.width,
       y: Math.random() * dimensions.height,
       vx: (Math.random() - 0.5) * 1, // Restored original velocity
       vy: (Math.random() - 0.5) * 1, // Restored original velocity
     }));
-    
+
     setPoints(newPoints);
 
     // Animation function with performance optimizations
     const animate = () => {
-      setPoints(currentPoints => 
+      // Only animate when visible
+      if (!isVisible) return;
+
+      setPoints(currentPoints =>
         currentPoints.map(point => ({
           x: ((point.x + point.vx + dimensions.width) % dimensions.width),
           y: ((point.y + point.vy + dimensions.height) % dimensions.height),
@@ -77,7 +100,7 @@ const AnimatedBackground = () => {
 
     const interval = setInterval(animate, ANIMATION_INTERVAL);
     return () => clearInterval(interval);
-  }, [mounted, dimensions]);
+  }, [mounted, dimensions, isVisible]);
 
   // Calculate lines between nearby points - kept optimizations but restored max connections
   const lines = useMemo(() => {
@@ -137,7 +160,7 @@ const AnimatedBackground = () => {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
+    <div ref={containerRef} className="fixed inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
       {/* Background Gradient */}
       <div 
         className="absolute inset-0"
