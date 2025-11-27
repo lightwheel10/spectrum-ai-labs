@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { GlowingButton, CalendarGlowingButton } from '../ui/GlowingButton';
 import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -7,6 +7,7 @@ import Image from 'next/image';
 const CompanyLogos = memo(() => {
   // Add responsive state to adjust animation speed on smaller screens
   const [animationDuration, setAnimationDuration] = useState(25);
+  const controls = useAnimationControls();
 
   // Adjust animation speed based on screen size
   useEffect(() => {
@@ -23,29 +24,40 @@ const CompanyLogos = memo(() => {
 
     // Add event listener
     window.addEventListener('resize', handleResize);
-    
+
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Seamless infinite scroll animation
+  useEffect(() => {
+    const animate = async () => {
+      // Infinite loop
+      while (true) {
+        // Animate from 0 to -1200
+        await controls.start({
+          x: -1200,
+          transition: {
+            duration: animationDuration,
+            ease: "linear",
+          },
+        });
+        // Instantly reset to 0 (seamless because of duplicated logos)
+        controls.set({ x: 0 });
+      }
+    };
+
+    animate();
+  }, [controls, animationDuration]);
+
   return (
     <motion.div
       className="flex gap-6 sm:gap-8 md:gap-12 items-center"
-      animate={{
-        x: [0, -1200],
-      }}
-      transition={{
-        x: {
-          duration: animationDuration,
-          repeat: Infinity,
-          ease: "linear",
-          repeatType: "loop",
-        },
-      }}
+      animate={controls}
+      initial={{ x: 0 }}
       style={{
         width: "fit-content",
         filter: "brightness(1.2) contrast(1.1)",
-        willChange: "transform", // Hint to browser for optimization
       }}
     >
       {/* First set of logos - reduced sizes for mobile */}
