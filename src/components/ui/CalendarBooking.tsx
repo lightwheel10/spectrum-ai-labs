@@ -5,7 +5,7 @@ import { useEffect } from "react";
 export const useCalendar = () => {
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ "namespace": "30min" });
+      const cal = await getCalApi({ "namespace": "10min" });
       cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
     })();
   }, []);
@@ -33,8 +33,8 @@ export const withCalendarBooking = <P extends { skipCalendar?: boolean; children
     
     // Add Cal.com attributes to the component
     const calProps = {
-      "data-cal-namespace": "30min",
-      "data-cal-link": "borus/30min",
+      "data-cal-namespace": "10min",
+      "data-cal-link": "borus/10min",
       "data-cal-config": '{"layout":"month_view"}'
     };
     
