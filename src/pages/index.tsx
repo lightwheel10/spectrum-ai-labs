@@ -92,7 +92,7 @@ export default function Home() {
                 key="content-wrapper"
                 initial={{ opacity: 0, visibility: 'hidden' }}
                 animate={{ opacity: 1, visibility: 'visible' }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
                 className="w-full overflow-x-hidden"
               >
                 <motion.main 
