@@ -356,10 +356,24 @@ const Process = () => {
   // Handle pagination for both mobile and desktop
   const handlePagination = (index: number) => {
     if (index === activeStep) return;
-    
+
+    // Clear existing timer to prevent immediate auto-transition
+    if (autoCycleTimerRef.current) {
+      clearInterval(autoCycleTimerRef.current);
+    }
+
     const newDirection = index > activeStep ? 1 : -1;
     setDirection(newDirection);
     setActiveStep(index);
+
+    // Restart auto-cycle timer after manual interaction
+    autoCycleTimerRef.current = setInterval(() => {
+      setDirection(1);
+      setActiveStep(prevStep => {
+        // Loop back to first step after reaching the end
+        return prevStep >= steps.length - 1 ? 0 : prevStep + 1;
+      });
+    }, 3000);
   };
 
   const processContent = useMemo(() => (
