@@ -78,23 +78,26 @@ export default function Home() {
         `}</style>
       </Head>
 
-      {!mounted ? null : (
-        <>
-          {/* Shared background that stays mounted */}
-          <AnimatedBackground />
-          
-          {/* Content that transitions */}
-          <AnimatePresence mode="wait">
-            {loading ? (
-              <LoadingScreen key="loading" />
-            ) : (
-              <motion.div
-                key="content-wrapper"
-                initial={{ opacity: 0, visibility: 'hidden' }}
-                animate={{ opacity: 1, visibility: 'visible' }}
-                transition={{ duration: 0.5, delay: 0.35 }}
-                className="w-full overflow-x-hidden"
-              >
+      {/* Static background skeleton for SSR - prevents blank flash */}
+      {!mounted && (
+        <div className="fixed inset-0 z-0 bg-[#0A0A0A]" />
+      )}
+
+      {/* Shared background that stays mounted */}
+      {mounted && <AnimatedBackground />}
+
+      {/* Content that transitions */}
+      <AnimatePresence mode="wait">
+        {mounted && loading ? (
+          <LoadingScreen key="loading" />
+        ) : mounted ? (
+          <motion.div
+            key="content-wrapper"
+            initial={{ opacity: 0, visibility: 'hidden' }}
+            animate={{ opacity: 1, visibility: 'visible' }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="w-full overflow-x-hidden"
+          >
                 <motion.main 
                   key="main" 
                   className="min-h-screen relative z-10 overflow-x-hidden"
@@ -146,9 +149,39 @@ export default function Home() {
                   <DelayedFooter />
                 </motion.main>
               </motion.div>
-            )}
+            ) : null}
           </AnimatePresence>
-        </>
+
+      {/* SSR fallback - show static loading skeleton */}
+      {!mounted && (
+        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4">
+          <div className="relative z-10 flex flex-col items-center">
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-6 sm:mb-8 md:mb-12 tracking-[-0.02em] leading-[1.1] text-center"
+              style={{
+                color: '#fff',
+                textShadow: '0 0 80px rgba(255,255,255,0.5)',
+              }}
+            >
+              <span className="bg-gradient-to-r from-[#FF4500] to-[#FF8C00] bg-clip-text text-transparent">
+                Spectrum
+              </span>
+              <span className="text-white mx-2 sm:mx-3">AI</span>
+              <span className="text-white">Labs</span>
+            </h1>
+            <div className="w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
+              <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden backdrop-blur-sm">
+                <div
+                  className="h-full"
+                  style={{
+                    background: 'linear-gradient(to right, rgba(239, 68, 68, 0.8), rgba(234, 88, 12, 0.8))',
+                    boxShadow: '0 0 20px rgba(239, 68, 68, 0.3)',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
