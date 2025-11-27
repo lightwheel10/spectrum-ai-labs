@@ -60,7 +60,7 @@ const LoadingScreen = () => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4 bg-[#0A0A0A]"
     >
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
