@@ -137,26 +137,25 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
     // Only run animations when visible
     if (!isVisible) return;
 
+    let interval: NodeJS.Timeout | null = null;
+
     if (type === 'voice') {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setWaveform(getIndustryWaveform(industry));
       }, 100);
-      return () => clearInterval(interval);
-    }
-
-    if (type === 'chat') {
-      const interval = setInterval(() => {
+    } else if (type === 'chat') {
+      interval = setInterval(() => {
         setMessageIndex((prev) => (prev + 1) % currentChat.length);
       }, 2000);
-      return () => clearInterval(interval);
-    }
-
-    if (type === 'automation') {
-      const interval = setInterval(() => {
+    } else if (type === 'automation') {
+      interval = setInterval(() => {
         setToolIndex((prev) => (prev + 1) % currentTools.length);
       }, 1500);
-      return () => clearInterval(interval);
     }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [type, industry, currentChat.length, currentTools.length, isVisible]);
 
   // Add resize handler to update waveform when screen size changes
