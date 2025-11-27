@@ -24,20 +24,21 @@ export const withCalendarBooking = <P extends { skipCalendar?: boolean; children
 ) => {
   // Use type assertion to handle the props correctly
   const WithCalendar = (props: P) => {
-    useCalendar();
-    
+    // Note: Cal.com API is initialized globally in _app.tsx
+    // No need to call useCalendar() here to avoid double initialization
+
     // Skip calendar integration if skipCalendar prop is true
     if (props.skipCalendar) {
       return <Component {...props} />;
     }
-    
+
     // Add Cal.com attributes to the component
     const calProps = {
       "data-cal-namespace": "10min",
       "data-cal-link": "borus/10min",
       "data-cal-config": '{"layout":"month_view"}'
     };
-    
+
     return <Component {...props} {...calProps} />;
   };
   
