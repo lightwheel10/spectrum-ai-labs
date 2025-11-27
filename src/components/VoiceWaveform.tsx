@@ -45,6 +45,8 @@ const VoiceWaveform = () => {
       // Get context and set scale immediately after resize
       const ctx = canvasRef.current.getContext('2d');
       if (ctx) {
+        // Reset transform before applying scale to prevent compounding
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
       }
     };
