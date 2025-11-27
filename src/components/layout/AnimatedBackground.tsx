@@ -70,7 +70,7 @@ const AnimatedBackground = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
 
-  // Generate initial points - memoized to only run when dimensions change
+  // Generate initial points when dimensions change
   useEffect(() => {
     if (!mounted || dimensions.width === 0) return;
 
@@ -82,12 +82,13 @@ const AnimatedBackground = () => {
     }));
 
     setPoints(newPoints);
+  }, [mounted, dimensions]);
 
-    // Animation function with performance optimizations
+  // Separate effect for animation that respects visibility
+  useEffect(() => {
+    if (!mounted || dimensions.width === 0 || !isVisible) return;
+
     const animate = () => {
-      // Only animate when visible
-      if (!isVisible) return;
-
       setPoints(currentPoints =>
         currentPoints.map(point => ({
           x: ((point.x + point.vx + dimensions.width) % dimensions.width),
