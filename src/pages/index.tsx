@@ -25,7 +25,6 @@ const Process = dynamic(() => import('../components/sections/Process'), { ssr: f
 const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false, loading: () => <SectionLoader /> });
 const Team = dynamic(() => import('../components/sections/Team'), { ssr: false, loading: () => <SectionLoader /> });
 const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false, loading: () => <SectionLoader /> });
-const Pricing = dynamic(() => import('../components/sections/Pricing'), { ssr: false, loading: () => <SectionLoader /> });
 const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: false, loading: () => <SectionLoader /> });
 const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: false, loading: () => <SectionLoader /> });
 
@@ -128,11 +127,7 @@ export default function Home() {
                   <section id="testimonials">
                     <Testimonials />
                   </section>
-                  
-                  <section id="pricing">
-                    <Pricing />
-                  </section>
-                  
+
                   <section id="team">
                     <Team />
                   </section>
