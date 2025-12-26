@@ -1,101 +1,16 @@
-import { motion, useAnimationControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { GlowingButton, CalendarGlowingButton } from '../ui/GlowingButton';
-import { memo, useEffect, useState } from 'react';
-import Image from 'next/image';
 
-// Optimize company logos animation with memoization
-const CompanyLogos = memo(() => {
-  // Add responsive state to adjust animation speed on smaller screens
-  const [animationDuration, setAnimationDuration] = useState(25);
-  const controls = useAnimationControls();
-
-  // Adjust animation speed based on screen size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setAnimationDuration(15); // Faster on mobile
-      } else {
-        setAnimationDuration(25);
-      }
-    };
-
-    // Set initial value
-    handleResize();
-
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-
-    // Clean up
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Seamless infinite scroll animation
-  useEffect(() => {
-    const animate = async () => {
-      // Infinite loop
-      while (true) {
-        // Animate from 0 to -1200
-        await controls.start({
-          x: -1200,
-          transition: {
-            duration: animationDuration,
-            ease: "linear",
-          },
-        });
-        // Instantly reset to 0 (seamless because of duplicated logos)
-        controls.set({ x: 0 });
-      }
-    };
-
-    animate();
-  }, [controls, animationDuration]);
-
-  return (
-    <motion.div
-      className="flex gap-6 sm:gap-8 md:gap-12 items-center"
-      animate={controls}
-      initial={{ x: 0 }}
-      style={{
-        width: "fit-content",
-        filter: "brightness(1.2) contrast(1.1)",
-      }}
-    >
-      {/* First set of logos - reduced sizes for mobile */}
-      <Image src="/logos/nexus-core.svg" alt="NexusCore" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/quantum-sphere.svg" alt="QuantumSphere" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/synth-mind.svg" alt="SynthMind" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/apex-labs.svg" alt="Apex Labs" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/data-nova.svg" alt="DataNova" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/cyber-flux.svg" alt="CyberFlux" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/tensor-labs.svg" alt="TensorLabs" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/nova-scale.svg" alt="NovaScale" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      
-      {/* Duplicate set for seamless loop */}
-      <Image src="/logos/nexus-core.svg" alt="NexusCore" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/quantum-sphere.svg" alt="QuantumSphere" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/synth-mind.svg" alt="SynthMind" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/apex-labs.svg" alt="Apex Labs" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/data-nova.svg" alt="DataNova" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/cyber-flux.svg" alt="CyberFlux" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/tensor-labs.svg" alt="TensorLabs" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-      <Image src="/logos/nova-scale.svg" alt="NovaScale" width={192} height={64} className="h-8 w-24 sm:h-10 sm:w-32 md:h-16 md:w-48 opacity-90 hover:opacity-100 transition-opacity" priority />
-    </motion.div>
-  );
-});
-
-// Add display name
-CompanyLogos.displayName = 'CompanyLogos';
-
-// Animation variants for consistent animations and better performance
-const fadeInUpVariants = {
-  hidden: { opacity: 0, y: 20 },
+// FIX 26/12/2025: Changed to opacity-only animations to prevent layout shifts
+// Using transform for y movement is GPU-accelerated but can still cause visual jank on load
+const fadeInVariants = {
+  hidden: { opacity: 0 },
   visible: (custom: number) => ({
-    opacity: 1, 
-    y: 0,
-    transition: { 
-      duration: 0.6, 
-      ease: [0.25, 0.1, 0.25, 1.0], // Improved easing curve
-      delay: custom * 0.1
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+      delay: custom * 0.08
     }
   })
 };
@@ -122,7 +37,7 @@ const Hero = () => {
             whileInView="visible"
             viewport={{ once: true }}
             custom={0}
-            variants={fadeInUpVariants}
+            variants={fadeInVariants}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium mb-4 sm:mb-6 tracking-[-0.02em] leading-[1.1]"
             style={{
               color: '#fff',
@@ -136,19 +51,20 @@ const Hero = () => {
             Built for Growth
           </motion.h1>
           
+          {/* FIX 26/12/2025: Updated copy for solo founder agency */}
           <motion.p
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             custom={2}
-            variants={fadeInUpVariants}
+            variants={fadeInVariants}
             className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 md:mb-10 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto"
             style={{
               color: 'rgba(255,255,255,0.7)',
               textShadow: '0 0 40px rgba(255,255,255,0.3)'
             }}
           >
-            We build AI solutions that drive real business results.
+            We build custom AI solutions that drive real business results. From strategy to deployment, we deliver.
           </motion.p>
 
           <motion.div
@@ -156,7 +72,7 @@ const Hero = () => {
             whileInView="visible"
             viewport={{ once: true }}
             custom={4}
-            variants={fadeInUpVariants}
+            variants={fadeInVariants}
             className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6"
           >
             <GlowingButton 
@@ -173,23 +89,6 @@ const Hero = () => {
             >
               Work with us <span className="ml-2">↗</span>
             </CalendarGlowingButton>
-          </motion.div>
-
-          {/* Company Section */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={6}
-            variants={fadeInUpVariants}
-            className="mt-12 sm:mt-16 md:mt-20 text-center"
-          >
-            <p className="text-white/60 mb-4 sm:mb-6 md:mb-8 text-xs sm:text-sm font-medium">You&apos;re in good company</p>
-            <div className="relative w-full max-w-full mx-auto overflow-hidden">
-              <div className="relative w-full overflow-hidden mix-blend-screen">
-                <CompanyLogos />
-              </div>
-            </div>
           </motion.div>
         </div>
       </div>

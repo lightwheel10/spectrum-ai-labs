@@ -1,12 +1,26 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { EnvelopeIcon, PhoneIcon, UserIcon, PaperAirplaneIcon, CheckIcon, BuildingOfficeIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+
+// FIX 26/12/2025: Added validation helpers
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const isValidPhone = (phone: string): boolean => {
+  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
+  return phone.length >= 7 && phoneRegex.test(phone);
+};
 
 const Contact = () => {
   const [formStep, setFormStep] = useState<1 | 2 | 'success'>(1);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [formMessage, setFormMessage] = useState('');
-  
+  // FIX 26/12/2025: Added validation errors state
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  // FIX 26/12/2025: Removed styleRef - styles moved to globals.css to prevent flicker
+
   // First step form data
   const [basicInfo, setBasicInfo] = useState({
     name: '',
@@ -14,7 +28,7 @@ const Contact = () => {
     phone: '',
     company: ''
   });
-  
+
   // Second step form data
   const [projectInfo, setProjectInfo] = useState({
     projectType: '',
@@ -29,6 +43,14 @@ const Contact = () => {
       ...prev,
       [name]: value
     }));
+    // FIX 26/12/2025: Clear validation error when user types
+    if (validationErrors[name]) {
+      setValidationErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleProjectInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -39,59 +61,81 @@ const Contact = () => {
     }));
   };
 
-  const handleFirstStepSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStep(2);
+  // FIX 26/12/2025: Added validation for first step
+  const validateBasicInfo = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (!basicInfo.name.trim()) {
+      errors.name = 'Name is required';
+    } else if (basicInfo.name.length > 100) {
+      errors.name = 'Name must be less than 100 characters';
+    }
+
+    if (!basicInfo.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!isValidEmail(basicInfo.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (!basicInfo.phone.trim()) {
+      errors.phone = 'Phone is required';
+    } else if (!isValidPhone(basicInfo.phone)) {
+      errors.phone = 'Please enter a valid phone number';
+    }
+
+    if (!basicInfo.company.trim()) {
+      errors.company = 'Company name is required';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
-  const handleSecondStepSubmit = async (e: React.FormEvent) => {
+  const handleFirstStepSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      setFormStatus('loading');
-      
-      // Simulate API call with a timeout
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Here you would typically send the combined form data to your backend
-      // const response = await fetch('/api/contact', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ ...basicInfo, ...projectInfo }),
-      // });
-      
-      // Success simulation
-      setFormStep('success');
-      setFormStatus('idle');
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setFormStatus('error');
-      setFormMessage('Something went wrong. Please try again later.');
+    // FIX 26/12/2025: Validate before proceeding
+    if (validateBasicInfo()) {
+      setFormStep(2);
     }
   };
 
-  // Add useEffect to style select dropdowns
-  useEffect(() => {
-    // Apply styles to dropdown options
-    const style = document.createElement('style');
-    style.textContent = `
-      select option {
-        background-color: rgba(0, 0, 0, 0.9);
-        color: white;
+  // FIX 26/12/2025: Now actually submits to the API endpoint
+  const handleSecondStepSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setFormStatus('loading');
+      setFormMessage('');
+
+      // FIX 26/12/2025: Actually send data to the API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...basicInfo, ...projectInfo }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit form');
       }
-      
-      select option[value=""] {
-        display: none;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+
+      // Success
+      setFormStep('success');
+      setFormStatus('idle');
+      // Reset form data
+      setBasicInfo({ name: '', email: '', phone: '', company: '' });
+      setProjectInfo({ projectType: '', budget: '', timeline: '', description: '' });
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setFormStatus('error');
+      setFormMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again later.');
+    }
+  };
+
+  // FIX 26/12/2025: Removed dynamic style injection - styles now in globals.css to prevent flicker
 
   return (
     <section id="contact" className="py-20 relative">
@@ -104,8 +148,9 @@ const Contact = () => {
         <div className="p-8 rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm">
           {formStep === 'success' ? (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
               className="text-center py-12"
             >
               <div className="w-20 h-20 bg-[#E5855E]/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -130,6 +175,7 @@ const Contact = () => {
               </div>
               
               <form onSubmit={handleFirstStepSubmit} className="space-y-6">
+                {/* FIX 26/12/2025: Added validation error display to all form fields */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white/80 mb-2">
                     Full Name*
@@ -144,13 +190,16 @@ const Contact = () => {
                       name="name"
                       value={basicInfo.name}
                       onChange={handleBasicInfoChange}
-                      className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors"
+                      className={`w-full pl-10 bg-black/30 border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors ${validationErrors.name ? 'border-red-500' : 'border-white/10'}`}
                       placeholder="John Doe"
-                      required
+                      maxLength={100}
                     />
                   </div>
+                  {validationErrors.name && (
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.name}</p>
+                  )}
                 </div>
-                
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
                     Email Address*
@@ -165,13 +214,15 @@ const Contact = () => {
                       name="email"
                       value={basicInfo.email}
                       onChange={handleBasicInfoChange}
-                      className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors"
+                      className={`w-full pl-10 bg-black/30 border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors ${validationErrors.email ? 'border-red-500' : 'border-white/10'}`}
                       placeholder="john@example.com"
-                      required
                     />
                   </div>
+                  {validationErrors.email && (
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.email}</p>
+                  )}
                 </div>
-                
+
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-white/80 mb-2">
                     Phone Number*
@@ -186,13 +237,15 @@ const Contact = () => {
                       name="phone"
                       value={basicInfo.phone}
                       onChange={handleBasicInfoChange}
-                      className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors"
+                      className={`w-full pl-10 bg-black/30 border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors ${validationErrors.phone ? 'border-red-500' : 'border-white/10'}`}
                       placeholder="+1 (555) 123-4567"
-                      required
                     />
                   </div>
+                  {validationErrors.phone && (
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.phone}</p>
+                  )}
                 </div>
-                
+
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-white/80 mb-2">
                     Company Name*
@@ -207,11 +260,13 @@ const Contact = () => {
                       name="company"
                       value={basicInfo.company}
                       onChange={handleBasicInfoChange}
-                      className="w-full pl-10 bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors"
+                      className={`w-full pl-10 bg-black/30 border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#E5855E]/50 focus:ring-1 focus:ring-[#E5855E]/50 transition-colors ${validationErrors.company ? 'border-red-500' : 'border-white/10'}`}
                       placeholder="Acme Inc."
-                      required
                     />
                   </div>
+                  {validationErrors.company && (
+                    <p className="mt-1 text-sm text-red-400">{validationErrors.company}</p>
+                  )}
                 </div>
                 
                 <button

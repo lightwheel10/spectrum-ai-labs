@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+// FIX 26/12/2025: Added AnimatePresence for proper exit animations on mobile menu
+import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarGlowingButton } from '../ui/GlowingButton';
 import { useState } from 'react';
 
@@ -10,13 +11,12 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // FIX 26/12/2025: Removed pricing and team links - solo founder agency
   const navItems = [
     { href: "#services", label: "Services" },
     { href: "#process", label: "Process" },
     { href: "#industries", label: "Industries" },
     { href: "#testimonials", label: "Testimonials" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#team", label: "Team" },
     { href: "#contact", label: "Contact" },
     { href: "#faq", label: "FAQ" }
   ];
@@ -166,36 +166,39 @@ const Navbar = () => {
             </div>
 
             {/* Mobile menu, show/hide based on menu state */}
-            {mobileMenuOpen && (
-              <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden z-50"
-              >
-                <div className="px-2 pt-2 pb-3 space-y-1">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10 transition-colors"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNavClick(item.href);
-                      }}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                  <div className="px-3 py-3">
-                    <CalendarGlowingButton size="small" className="w-full">
-                      Work with us
-                    </CalendarGlowingButton>
+            {/* FIX 26/12/2025: Wrapped with AnimatePresence to enable exit animations */}
+            <AnimatePresence>
+              {mobileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="md:hidden absolute top-full left-0 right-0 mt-2 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden z-50"
+                >
+                  <div className="px-2 pt-2 pb-3 space-y-1">
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10 transition-colors"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleNavClick(item.href);
+                        }}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                    <div className="px-3 py-3">
+                      <CalendarGlowingButton size="small" className="w-full">
+                        Work with us
+                      </CalendarGlowingButton>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </motion.nav>

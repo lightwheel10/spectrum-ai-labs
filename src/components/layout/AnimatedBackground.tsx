@@ -16,6 +16,25 @@ interface Line {
   opacity: number;
 }
 
+// FIX 26/12/2025: Added interface for decorative line
+interface DecorativeLine {
+  id: string;
+  x1: string;
+  y1: string;
+  x2: string;
+  y2: string;
+  duration: number;
+}
+
+// FIX 26/12/2025: Added interface for star
+interface Star {
+  id: string;
+  x: number;
+  y: number;
+  opacity: number;
+  duration: number;
+}
+
 // Restored original numbers of elements but kept other optimizations
 const NUM_POINTS = 30; // Restored original value
 const MAX_DISTANCE = 300; // Restored original value
@@ -29,6 +48,10 @@ const AnimatedBackground = () => {
   const [points, setPoints] = useState<Point[]>([]);
   const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  // FIX 26/12/2025: Store decorative lines in state to avoid SSR hydration mismatch
+  const [decorativeLines, setDecorativeLines] = useState<DecorativeLine[]>([]);
+  // FIX 26/12/2025: Store stars in state to avoid SSR hydration mismatch
+  const [starsState, setStarsState] = useState<Star[]>([]);
 
   // Memoize the resize handler to prevent recreation on each render
   const handleResize = useCallback(() => {
@@ -133,9 +156,11 @@ const AnimatedBackground = () => {
     return result;
   }, [points]);
 
-  // Memoize decorative lines to prevent recreation on each render
-  const decorativeLines = useMemo(() => {
-    return Array.from({ length: NUM_DECORATIVE_LINES }, (_, i) => ({
+  // FIX 26/12/2025: Generate decorative lines only on client-side mount to prevent SSR hydration mismatch
+  useEffect(() => {
+    if (!mounted) return;
+
+    const lines = Array.from({ length: NUM_DECORATIVE_LINES }, (_, i) => ({
       id: `decor-line-${i}`,
       x1: `${Math.random() * 100}%`,
       y1: `${Math.random() * 100}%`,
@@ -143,22 +168,25 @@ const AnimatedBackground = () => {
       y2: `${Math.random() * 100}%`,
       duration: Math.random() * 2 + 2
     }));
-  }, []);
+    setDecorativeLines(lines);
+  }, [mounted]);
 
-  // Memoize stars to prevent recreation on each render
-  const stars = useMemo(() => {
-    if (!mounted || dimensions.width === 0) return [];
-    
-    return Array.from({ length: NUM_STARS }, (_, i) => ({
+  // FIX 26/12/2025: Generate stars only on client-side mount to prevent SSR hydration mismatch
+  useEffect(() => {
+    if (!mounted || dimensions.width === 0) return;
+
+    const newStars = Array.from({ length: NUM_STARS }, (_, i) => ({
       id: `star-${i}`,
       x: Math.random() * dimensions.width,
       y: Math.random() * dimensions.height,
       opacity: Math.random() * 0.5 + 0.25,
       duration: Math.random() * 10 + 10
     }));
+    setStarsState(newStars);
   }, [mounted, dimensions]);
 
-  if (!mounted) return null;
+  // FIX 26/12/2025: Return static background instead of null to prevent flash
+  // The static gradient matches the final state to eliminate visual jump
 
   return (
     <div ref={containerRef} className="fixed inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
@@ -172,100 +200,106 @@ const AnimatedBackground = () => {
       />
 
       {/* Network and Line Animations - restored original complexity */}
-      <div className="absolute inset-0 overflow-hidden">
-        <svg className="absolute w-full h-full">
-          <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: 'rgba(255,255,255,0.3)' }} />
-              <stop offset="100%" style={{ stopColor: 'rgba(255,255,255,0.1)' }} />
-            </linearGradient>
-          </defs>
-          
-          {/* Network Lines */}
-          {lines.map((line, i) => (
-            <motion.line
-              key={`network-line-${i}`}
-              x1={line.x1}
-              y1={line.y1}
-              x2={line.x2}
-              y2={line.y2}
-              stroke="rgba(255,255,255,0.4)"
-              strokeWidth="0.75"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: line.opacity }}
-              transition={{ duration: 0.5 }}
-            />
-          ))}
+      {/* FIX 26/12/2025: Only render animated elements after mount to prevent hydration mismatch */}
+      {mounted && (
+        <div className="absolute inset-0 overflow-hidden">
+          <svg className="absolute w-full h-full">
+            <defs>
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{ stopColor: 'rgba(255,255,255,0.3)' }} />
+                <stop offset="100%" style={{ stopColor: 'rgba(255,255,255,0.1)' }} />
+              </linearGradient>
+            </defs>
 
-          {/* Network Dots */}
-          {points.map((point, i) => (
-            <motion.circle
-              key={`point-${i}`}
-              cx={point.x}
-              cy={point.y}
-              r="2" // Restored original size
-              fill="rgba(255,255,255,1)"
-              initial={{ scale: 0 }}
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [1, 0.8, 1]
-              }}
-              transition={{ 
-                duration: 2, // Restored original duration
-                repeat: Infinity,
-                ease: "easeInOut",
-                repeatDelay: 1 // Kept optimization (added delay between animations)
-              }}
-            />
-          ))}
+            {/* Network Lines */}
+            {lines.map((line, i) => (
+              <motion.line
+                key={`network-line-${i}`}
+                x1={line.x1}
+                y1={line.y1}
+                x2={line.x2}
+                y2={line.y2}
+                stroke="rgba(255,255,255,0.4)"
+                strokeWidth="0.75"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: line.opacity }}
+                transition={{ duration: 0.5 }}
+              />
+            ))}
 
-          {/* Decorative Lines */}
-          {decorativeLines.map((line) => (
-            <motion.line
-              key={line.id}
-              x1={line.x1}
-              y1={line.y1}
-              x2={line.x2}
-              y2={line.y2}
-              stroke="url(#lineGradient)"
-              strokeWidth="1"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.5 }} // Restored original opacity
-              transition={{
-                duration: line.duration,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-                repeatDelay: 0.5 // Kept optimization (added delay between animations)
-              }}
-            />
-          ))}
-        </svg>
-      </div>
+            {/* Network Dots */}
+            {points.map((point, i) => (
+              <motion.circle
+                key={`point-${i}`}
+                cx={point.x}
+                cy={point.y}
+                r="2"
+                fill="rgba(255,255,255,1)"
+                initial={{ scale: 0 }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [1, 0.8, 1]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  repeatDelay: 1
+                }}
+              />
+            ))}
+
+            {/* Decorative Lines */}
+            {decorativeLines.map((line) => (
+              <motion.line
+                key={line.id}
+                x1={line.x1}
+                y1={line.y1}
+                x2={line.x2}
+                y2={line.y2}
+                stroke="url(#lineGradient)"
+                strokeWidth="1"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.5 }}
+                transition={{
+                  duration: line.duration,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  repeatDelay: 0.5
+                }}
+              />
+            ))}
+          </svg>
+        </div>
+      )}
 
       {/* Animated Stars */}
-      <div className="absolute inset-0">
-        {stars.map((star) => (
-          <motion.div
-            key={star.id}
-            className="absolute w-[2px] h-[2px] bg-white rounded-full"
-            initial={{
-              opacity: star.opacity,
-              x: star.x,
-              y: star.y,
-            }}
-            animate={{
-              opacity: [null, 0, star.opacity, 0],
-            }}
-            transition={{
-              duration: star.duration,
-              repeat: Infinity,
-              ease: "linear",
-              repeatDelay: 1 // Kept optimization (added delay between animations)
-            }}
-          />
-        ))}
-      </div>
+      {/* FIX 26/12/2025: Only render stars after mount */}
+      {mounted && (
+        <div className="absolute inset-0">
+          {starsState.map((star) => (
+            <motion.div
+              key={star.id}
+              className="absolute w-[2px] h-[2px] bg-white rounded-full"
+              initial={{
+                opacity: star.opacity,
+                x: star.x,
+                y: star.y,
+              }}
+              animate={{
+                opacity: [null, 0, star.opacity, 0],
+              }}
+              transition={{
+                duration: star.duration,
+                repeat: Infinity,
+                ease: "linear",
+                repeatDelay: 1
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

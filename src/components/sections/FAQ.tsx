@@ -89,10 +89,11 @@ const FAQ = () => {
               </div>
             </div>
             
+            {/* FIX 26/12/2025: Removed y-transform to prevent layout shift */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
               viewport={{ once: true }}
             >
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6">FAQ</h2>

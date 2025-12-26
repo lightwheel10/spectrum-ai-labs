@@ -14,25 +14,22 @@ const AnimatedBackground = dynamic(
   { ssr: false } // Don't render on server for better performance
 );
 
-// Empty loader for Hero section to prevent flash of loading spinner
+// FIX 26/12/2025: Consolidated duplicate EmptyLoader and SectionLoader into single component
+// Empty loader component to prevent flash of loading spinners
 const EmptyLoader = () => null;
 
 // Dynamically import sections with loading fallbacks
-const Hero = dynamic(() => import('../components/sections/Hero'), { ssr: true, loading: () => <EmptyLoader /> });
-const About = dynamic(() => import('../components/sections/About'), { ssr: false, loading: () => <SectionLoader /> });
-const Services = dynamic(() => import('../components/sections/Services'), { ssr: false, loading: () => <SectionLoader /> });
-const Process = dynamic(() => import('../components/sections/Process'), { ssr: false, loading: () => <SectionLoader /> });
-const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false, loading: () => <SectionLoader /> });
-const Team = dynamic(() => import('../components/sections/Team'), { ssr: false, loading: () => <SectionLoader /> });
-const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false, loading: () => <SectionLoader /> });
-const Pricing = dynamic(() => import('../components/sections/Pricing'), { ssr: false, loading: () => <SectionLoader /> });
-const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: false, loading: () => <SectionLoader /> });
-const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: false, loading: () => <SectionLoader /> });
-
-// Simple loading fallback component
-const SectionLoader = () => (
-  null
-);
+const Hero = dynamic(() => import('../components/sections/Hero'), { ssr: true, loading: EmptyLoader });
+const About = dynamic(() => import('../components/sections/About'), { ssr: false, loading: EmptyLoader });
+const Services = dynamic(() => import('../components/sections/Services'), { ssr: false, loading: EmptyLoader });
+const Process = dynamic(() => import('../components/sections/Process'), { ssr: false, loading: EmptyLoader });
+const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false, loading: EmptyLoader });
+// FIX 26/12/2025: Replaced Team with Founder section for solo founder agency
+const Founder = dynamic(() => import('../components/sections/Founder'), { ssr: false, loading: EmptyLoader });
+const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false, loading: EmptyLoader });
+// FIX 26/12/2025: Removed Pricing section - not needed for solo founder agency
+const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: false, loading: EmptyLoader });
+const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: false, loading: EmptyLoader });
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -78,13 +75,9 @@ export default function Home() {
         `}</style>
       </Head>
 
-      {/* Static background skeleton for SSR - prevents blank flash */}
-      {!mounted && (
-        <div className="fixed inset-0 z-0 bg-[#0A0A0A]" />
-      )}
-
-      {/* Shared background that stays mounted */}
-      {mounted && <AnimatedBackground />}
+      {/* FIX 26/12/2025: Simplified - AnimatedBackground now shows static gradient immediately */}
+      {/* Background layer - static on SSR, animated after hydration */}
+      {mounted ? <AnimatedBackground /> : <div className="fixed inset-0 z-0 bg-[#0A0A0A]" />}
 
       {/* Content that transitions */}
       <AnimatePresence mode="wait">
@@ -93,10 +86,11 @@ export default function Home() {
         ) : mounted ? (
           <motion.div
             key="content-wrapper"
-            initial={{ opacity: 0, visibility: 'hidden' }}
-            animate={{ opacity: 1, visibility: 'visible' }}
-            transition={{ duration: 0.5, delay: 0.35 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="w-full overflow-x-hidden"
+            style={{ willChange: 'opacity' }}
           >
                 <motion.main 
                   key="main" 
@@ -129,12 +123,9 @@ export default function Home() {
                     <Testimonials />
                   </section>
                   
-                  <section id="pricing">
-                    <Pricing />
-                  </section>
                   
-                  <section id="team">
-                    <Team />
+                  <section id="founder">
+                    <Founder />
                   </section>
                   
                   <section id="contact">
@@ -152,7 +143,7 @@ export default function Home() {
             ) : null}
           </AnimatePresence>
 
-      {/* SSR fallback - show static loading skeleton */}
+      {/* FIX 26/12/2025: SSR fallback - matches LoadingScreen to prevent visual jump on hydration */}
       {!mounted && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4">
           <div className="relative z-10 flex flex-col items-center">
@@ -172,7 +163,7 @@ export default function Home() {
             <div className="w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
               <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden backdrop-blur-sm">
                 <div
-                  className="h-full"
+                  className="h-full w-0"
                   style={{
                     background: 'linear-gradient(to right, rgba(239, 68, 68, 0.8), rgba(234, 88, 12, 0.8))',
                     boxShadow: '0 0 20px rgba(239, 68, 68, 0.3)',

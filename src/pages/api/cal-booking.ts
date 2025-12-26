@@ -52,9 +52,9 @@ export default async function handler(
     
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Log the booking data for debugging
-    console.log('Booking received:', bookingData);
+
+    // FIX 26/12/2025: Removed console.log from production code
+    // TODO: In production, integrate with Cal.com API or database storage here
     
     // Return success response with a mock booking ID
     return res.status(200).json({

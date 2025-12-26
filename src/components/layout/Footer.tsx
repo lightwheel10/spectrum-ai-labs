@@ -1,5 +1,14 @@
 import Link from 'next/link';
 
+// FIX 26/12/2025: Added smooth scroll handler for anchor links
+const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  e.preventDefault();
+  const element = document.getElementById(href.substring(1));
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
 const Footer = () => {
   return (
     <footer className="relative z-10 border-t border-zinc-800 bg-black/30 backdrop-blur-sm">
@@ -11,7 +20,8 @@ const Footer = () => {
             <div className="space-y-3 sm:space-y-4">
               <div>
                 <p className="text-amber-500 mb-1 text-sm sm:text-base">Email</p>
-                <Link href="mailto:hello@auralis.com" className="text-white text-sm sm:text-base flex items-center hover:text-amber-400 transition-colors">
+                {/* FIX 26/12/2025: Fixed incorrect email href - was pointing to auralis.com instead of spectrumailabs.com */}
+                <Link href="mailto:hello@spectrumailabs.com" className="text-white text-sm sm:text-base flex items-center hover:text-amber-400 transition-colors">
                   hello@spectrumailabs.com
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -31,30 +41,26 @@ const Footer = () => {
           </div>
 
           {/* Links Column */}
+          {/* FIX 26/12/2025: Changed from Next.js Link to regular anchor tags with smooth scroll for internal anchor links */}
           <div className="space-y-4 sm:space-y-6">
             <h3 className="text-xl sm:text-2xl font-medium text-white">Links</h3>
             <div className="space-y-2 sm:space-y-4">
-              <Link href="#services" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+              <a href="#services" onClick={(e) => handleAnchorClick(e, '#services')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 Services
-              </Link>
-              <Link href="#process" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+              </a>
+              <a href="#process" onClick={(e) => handleAnchorClick(e, '#process')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 Process
-              </Link>
-              <Link href="#industries" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+              </a>
+              <a href="#industries" onClick={(e) => handleAnchorClick(e, '#industries')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 Industries
-              </Link>
-              <Link href="#pricing" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                Pricing
-              </Link>
-              <Link href="#team" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                Team
-              </Link>
-              <Link href="#contact" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+              </a>
+              {/* FIX 26/12/2025: Removed pricing and team links - solo founder agency */}
+              <a href="#contact" onClick={(e) => handleAnchorClick(e, '#contact')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 Contact
-              </Link>
-              <Link href="#faq" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+              </a>
+              <a href="#faq" onClick={(e) => handleAnchorClick(e, '#faq')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 FAQ
-              </Link>
+              </a>
             </div>
           </div>
 

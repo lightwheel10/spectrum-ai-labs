@@ -15,10 +15,11 @@ const fadeVariants = {
   exit: { opacity: 0, transition: { duration: 0.3 } }
 };
 
+// FIX 26/12/2025: Removed y-transforms to prevent layout shifts during transition
 const fadeUpVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, y: -10, transition: { duration: 0.2 } }
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 // Memoized loading message component to prevent unnecessary re-renders
@@ -65,10 +66,11 @@ const LoadingScreen = () => {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
         {/* Logo Text */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
+        {/* FIX 26/12/2025: Removed y-transform for smoother transition */}
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-6 sm:mb-8 md:mb-12 tracking-[-0.02em] leading-[1.1] text-center"
           style={{
             color: '#fff',

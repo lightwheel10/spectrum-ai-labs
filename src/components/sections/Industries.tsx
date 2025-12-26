@@ -84,22 +84,27 @@ const industryTools: Record<IndustryName, Tool[]> = {
   ]
 };
 
-// Industry-specific waveform patterns
-const getIndustryWaveform = (industry: IndustryName): number[] => {
-  const baseAmplitude: Record<IndustryName, number> = {
-    "E-commerce": 80,
-    "Real Estate": 60,
-    "Legal": 40,
-    "Finance": 50,
-    "Healthcare": 30
-  };
-  
-  // Generate fewer bars for smaller screens
-  const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1024;
-  const barCount = windowWidth < 640 ? 20 : windowWidth < 1024 ? 30 : 40;
-  
-  return Array.from({ length: barCount }, () => Math.random() * (baseAmplitude[industry] || 50));
+// FIX 26/12/2025: Moved base amplitude outside function to avoid recreation
+const industryBaseAmplitude: Record<IndustryName, number> = {
+  "E-commerce": 80,
+  "Real Estate": 60,
+  "Legal": 40,
+  "Finance": 50,
+  "Healthcare": 30
 };
+
+// FIX 26/12/2025: Fixed SSR issue - function now accepts windowWidth as parameter instead of accessing window directly
+const getIndustryWaveform = (industry: IndustryName, windowWidth: number = 1024): number[] => {
+  // Generate fewer bars for smaller screens
+  const barCount = windowWidth < 640 ? 20 : windowWidth < 1024 ? 30 : 40;
+
+  return Array.from({ length: barCount }, () => Math.random() * (industryBaseAmplitude[industry] || 50));
+};
+
+// FIX 26/12/2025: Default waveform for SSR to prevent empty flash - 40 bars with varied heights
+const DEFAULT_WAVEFORM = Array.from({ length: 40 }, (_, i) =>
+  30 + Math.sin(i * 0.5) * 20 + (i % 3) * 10
+);
 
 interface SolutionVisualProps {
   type: string;
@@ -109,11 +114,17 @@ interface SolutionVisualProps {
 const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [waveform, setWaveform] = useState<number[]>(getIndustryWaveform(industry));
+  // FIX 26/12/2025: Initialize with default waveform to prevent empty flash on first render
+  const [waveform, setWaveform] = useState<number[]>(DEFAULT_WAVEFORM);
   const [messageIndex, setMessageIndex] = useState(0);
   const [toolIndex, setToolIndex] = useState(0);
   const currentChat = industryChats[industry];
   const currentTools = industryTools[industry];
+
+  // FIX 26/12/2025: Generate waveform on client side only to avoid SSR mismatch
+  useEffect(() => {
+    setWaveform(getIndustryWaveform(industry, window.innerWidth));
+  }, [industry]);
 
   // Intersection Observer to pause animations when off-screen
   useEffect(() => {
@@ -431,9 +442,10 @@ const Industries = () => {
       </svg>
 
       <div className="relative z-10 max-w-7xl mx-auto">
+        {/* FIX 26/12/2025: Removed y-transforms to prevent layout shifts */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center text-[#E5855E] text-sm tracking-wide uppercase"
         >
@@ -441,20 +453,20 @@ const Industries = () => {
         </motion.p>
 
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.1 }}
           className="text-center text-2xl sm:text-4xl md:text-5xl lg:text-[5.5rem] font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-white via-white/90 to-white bg-clip-text text-transparent"
         >
           Industries we work with
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.2 }}
           className="text-center text-gray-400 text-base sm:text-lg md:text-xl max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16"
         >
           Hear the success stories of the businesses we&apos;ve helped thrive with AI. We work with a variety of different industries.
@@ -467,10 +479,10 @@ const Industries = () => {
             {industries.slice(0, 3).map((industry, index) => (
               <motion.div
                 key={industry.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.08 }}
                 className="group cursor-pointer"
                 onClick={() => setActiveIndex(index)}
               >
@@ -513,10 +525,10 @@ const Industries = () => {
               return (
                 <motion.div
                   key={industry.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                   className="group cursor-pointer"
                   onClick={() => setActiveIndex(index)}
                 >
@@ -558,9 +570,9 @@ const Industries = () => {
           {industries[activeIndex].solutions.map((solution, index) => (
             <motion.div
               key={solution.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index * 0.08 }}
               className="bg-black/20 rounded-lg p-4 sm:p-6 lg:p-8 relative"
             >
               <SolutionVisual 

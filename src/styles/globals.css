@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* FIX 26/12/2025: Updated CSS variables for dark theme - was using light mode colors */
 :root {
-  --foreground-rgb: 17, 24, 39;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 249, 250, 251;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 10, 10, 10;
+  /* FIX 26/12/2025: Added accent color variable for consistency */
+  --accent-rgb: 229, 133, 94;
 }
 
 body {
@@ -17,25 +20,53 @@ body {
   );
 }
 
+/* FIX 26/12/2025: Updated scrollbar colors to match dark theme */
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
+  background: #3a3a3a;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a5b4fc;
+  background: rgb(var(--accent-rgb));
+}
+
+/* FIX 26/12/2025: Added Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3a #1a1a1a;
 }
 
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* FIX 26/12/2025: Testimonials carousel animation - moved from dynamic injection to prevent flicker */
+/* Default scroll animation using CSS custom property for width */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--scroll-width, -3220px));
+  }
+}
+
+/* FIX 26/12/2025: Contact form select styles - moved from dynamic injection to prevent flicker */
+select option {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+select option[value=""] {
+  display: none;
 }

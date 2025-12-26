@@ -1,16 +1,17 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+// FIX 26/12/2025: Added useMemo for proper animation width calculation
+// FIX 26/12/2025: Removed unused useRef and useEffect imports
+import { useState, useMemo } from 'react';
 
-// Animation variants for consistent animations and better performance
-const fadeInUpVariants = {
-  hidden: { opacity: 0, y: 20 },
+// FIX 26/12/2025: Changed to opacity-only animations to prevent layout shifts
+const fadeInVariants = {
+  hidden: { opacity: 0 },
   visible: (custom: number) => ({
-    opacity: 1, 
-    y: 0,
-    transition: { 
-      duration: 0.6, 
-      ease: [0.25, 0.1, 0.25, 1.0], // Improved easing curve
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
       delay: custom * 0.1
     }
   })
@@ -136,8 +137,9 @@ const LinkedInCard = ({
 };
 
 const Testimonials = () => {
-  const carouselRef = useRef<HTMLDivElement>(null);
+  // FIX 26/12/2025: Removed unused carouselRef
   const [isPaused, setIsPaused] = useState(false);
+  // FIX 26/12/2025: Removed mounted state - animation now uses CSS variables in globals.css
 
   // Twitter-style testimonials
   const twitterTestimonials = [
@@ -281,21 +283,21 @@ const Testimonials = () => {
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
 
-  // Calculate the total width for animation
-  const calculateTotalWidth = () => {
-    let totalWidth = 0;
+  // FIX 26/12/2025: Use useMemo to calculate total width once and avoid recalculation on each render
+  const totalWidth = useMemo(() => {
+    let width = 0;
     const itemCount = carouselItems.length / 2; // Original items without duplicates
-    
+
     // Add up widths based on sizes
     carouselItems.slice(0, itemCount).forEach(item => {
       const size = item.data.size || 'medium';
-      if (size === 'small') totalWidth += 280 + 6; // width + margin
-      else if (size === 'medium') totalWidth += 320 + 6;
-      else totalWidth += 380 + 6;
+      if (size === 'small') width += 280 + 6; // width + margin
+      else if (size === 'medium') width += 320 + 6;
+      else width += 380 + 6;
     });
-    
-    return totalWidth;
-  };
+
+    return width;
+  }, [carouselItems]);
 
   return (
     <section className="relative py-20" id="testimonials">
@@ -307,7 +309,7 @@ const Testimonials = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          variants={fadeInUpVariants}
+          variants={fadeInVariants}
           custom={0}
           className="mb-16"
         >
@@ -328,17 +330,19 @@ const Testimonials = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <div 
-              ref={carouselRef}
+            {/* FIX 26/12/2025: Removed unused ref={carouselRef} */}
+            {/* FIX 26/12/2025: Added CSS variable for scroll width - animation defined in globals.css */}
+            <div
               className="flex items-center"
               style={{
-                animationDuration: '60s', // 1 minute
+                '--scroll-width': `-${totalWidth}px`,
+                animationDuration: '60s',
                 animationTimingFunction: 'linear',
                 animationIterationCount: 'infinite',
                 animationName: 'scroll',
                 animationPlayState: isPaused ? 'paused' : 'running',
                 willChange: 'transform'
-              }}
+              } as React.CSSProperties}
             >
               {carouselItems.map((item, index) => (
                 item.type === 'twitter' ? (
@@ -369,17 +373,7 @@ const Testimonials = () => {
         </div>
       </div>
 
-      {/* Add the CSS animation */}
-      <style jsx global>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-${calculateTotalWidth()}px));
-          }
-        }
-      `}</style>
+      {/* FIX 26/12/2025: CSS animation moved to globals.css to prevent flicker */}
     </section>
   );
 };

@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useRef, useEffect, useMemo } from 'react';
+// FIX 26/12/2025: Added useCallback for timer cleanup functions
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 
 const tools = {
@@ -333,9 +334,15 @@ const Process = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-cycle effect for both mobile and desktop
-  useEffect(() => {
-    // Set up auto-cycling
+  // FIX 26/12/2025: Extracted timer start logic into reusable function to avoid code duplication
+  const startAutoCycle = useCallback(() => {
+    // Clear any existing timer first
+    if (autoCycleTimerRef.current) {
+      clearInterval(autoCycleTimerRef.current);
+      autoCycleTimerRef.current = null;
+    }
+
+    // Set up new auto-cycling timer
     autoCycleTimerRef.current = setInterval(() => {
       setDirection(1);
       setActiveStep(prevStep => {
@@ -343,37 +350,38 @@ const Process = () => {
         return prevStep >= steps.length - 1 ? 0 : prevStep + 1;
       });
     }, 3000); // Change step every 3 seconds
+  }, []);
+
+  // FIX 26/12/2025: Extracted timer stop logic into reusable function
+  const stopAutoCycle = useCallback(() => {
+    if (autoCycleTimerRef.current) {
+      clearInterval(autoCycleTimerRef.current);
+      autoCycleTimerRef.current = null;
+    }
+  }, []);
+
+  // Auto-cycle effect for both mobile and desktop
+  // FIX 26/12/2025: Now uses the extracted functions for cleaner code and proper cleanup
+  useEffect(() => {
+    startAutoCycle();
 
     // Clean up on unmount or when dependencies change
     return () => {
-      if (autoCycleTimerRef.current) {
-        clearInterval(autoCycleTimerRef.current);
-        autoCycleTimerRef.current = null;
-      }
+      stopAutoCycle();
     };
-  }, []);
+  }, [startAutoCycle, stopAutoCycle]);
 
   // Handle pagination for both mobile and desktop
+  // FIX 26/12/2025: Uses extracted functions to ensure consistent timer handling
   const handlePagination = (index: number) => {
     if (index === activeStep) return;
-
-    // Clear existing timer to prevent immediate auto-transition
-    if (autoCycleTimerRef.current) {
-      clearInterval(autoCycleTimerRef.current);
-    }
 
     const newDirection = index > activeStep ? 1 : -1;
     setDirection(newDirection);
     setActiveStep(index);
 
     // Restart auto-cycle timer after manual interaction
-    autoCycleTimerRef.current = setInterval(() => {
-      setDirection(1);
-      setActiveStep(prevStep => {
-        // Loop back to first step after reaching the end
-        return prevStep >= steps.length - 1 ? 0 : prevStep + 1;
-      });
-    }, 3000);
+    startAutoCycle();
   };
 
   const processContent = useMemo(() => (

@@ -11,12 +11,7 @@ export const useCalendar = () => {
   }, []);
 };
 
-// Define props interface to replace any
-export interface CalendarProps {
-  children: React.ReactNode; // Make children required
-  skipCalendar?: boolean;
-  [key: string]: unknown; // For other props, use unknown instead of any
-}
+// FIX 26/12/2025: Removed unused CalendarProps interface entirely
 
 // Add Cal.com attributes to any component
 export const withCalendarBooking = <P extends { skipCalendar?: boolean; children: React.ReactNode }>(
@@ -35,7 +30,7 @@ export const withCalendarBooking = <P extends { skipCalendar?: boolean; children
     // Add Cal.com attributes to the component
     const calProps = {
       "data-cal-namespace": "10min",
-      "data-cal-link": "borus/10min",
+      "data-cal-link": "paras/10min",
       "data-cal-config": '{"layout":"month_view"}'
     };
 

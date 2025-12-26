@@ -1,4 +1,4 @@
-import Image from 'next/image';
+// FIX 26/12/2025: Removed team avatars and updated copy for solo founder agency
 
 const Star = () => (
   <svg
@@ -31,41 +31,18 @@ const Star = () => (
   </svg>
 );
 
-const teamMembers = [
-  { id: 1, image: 'https://randomuser.me/api/portraits/men/32.jpg' },
-  { id: 2, image: 'https://randomuser.me/api/portraits/women/44.jpg' },
-  { id: 3, image: 'https://randomuser.me/api/portraits/men/86.jpg' }
-];
-
 const About = () => {
   return (
     <section className="relative py-12 overflow-x-hidden" id="about">
       <div className="max-w-2xl mx-auto px-4">
         <div className="flex justify-center mb-6">
-          <span className="text-[#E5855E] text-sm">About us</span>
+          <span className="text-[#E5855E] text-sm">About</span>
         </div>
-        
+
         <div className="space-y-3">
-          <p className="text-3xl font-medium text-white leading-tight flex items-center gap-2">Hi, we&apos;re Spectrum AI Labs <Star /></p>
+          <p className="text-3xl font-medium text-white leading-tight flex items-center gap-2">Hi, I&apos;m Paras <Star /></p>
           <div className="text-3xl sm:text-3xl text-xl font-medium text-white leading-tight">
-            <p className="inline sm:inline block mb-2 sm:mb-0">We craft cutting edge AI solutions to make organizations more competitive. We do so with a motivated team</p>
-            <span className="inline-flex sm:mx-4 mx-0 align-middle sm:inline-flex flex justify-center my-2 sm:my-0">
-              {teamMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-black overflow-hidden -ml-3 first:ml-0"
-                >
-                  <Image
-                    src={member.image}
-                    alt="Team member"
-                    fill
-                    unoptimized
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </span>
-            <p className="inline sm:inline block mt-2 sm:mt-0">of 6 experts focused on building world-class solutions.</p>
+            <p>We craft cutting-edge AI solutions to make organizations more competitive. We work directly with you, no middlemen, no handoffs. Just focused expertise delivering world-class results.</p>
           </div>
         </div>
       </div>
