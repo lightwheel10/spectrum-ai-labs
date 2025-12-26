@@ -46,12 +46,11 @@ const Hero = () => {
               backgroundClip: 'text',
             }}
           >
-            AI Solutions
+            Make Your Business
             <br />
-            Built for Growth
+            AI-First
           </motion.h1>
-          
-          {/* FIX 26/12/2025: Updated copy for solo founder agency */}
+
           <motion.p
             initial="hidden"
             whileInView="visible"
@@ -64,7 +63,7 @@ const Hero = () => {
               textShadow: '0 0 40px rgba(255,255,255,0.3)'
             }}
           >
-            We build custom AI solutions that drive real business results. From strategy to deployment, we deliver.
+            We automate your workflows, integrate AI into your processes, and build intelligent systems that work 24/7. Cut costs, save time, scale faster.
           </motion.p>
 
           <motion.div

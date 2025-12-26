@@ -42,7 +42,7 @@ const About = () => {
         <div className="space-y-3">
           <p className="text-3xl font-medium text-white leading-tight flex items-center gap-2">Hi, I&apos;m Paras <Star /></p>
           <div className="text-3xl sm:text-3xl text-xl font-medium text-white leading-tight">
-            <p>We craft cutting-edge AI solutions to make organizations more competitive. We work directly with you, no middlemen, no handoffs. Just focused expertise delivering world-class results.</p>
+            <p>Your competitors are already using AI to handle customer inquiries, automate operations, and make faster decisions. We help you catch up and get ahead. From automating repetitive tasks to building AI agents that work around the clock, we transform how your business operates.</p>
           </div>
         </div>
       </div>

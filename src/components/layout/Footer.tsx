@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="space-y-4 sm:space-y-6">
             <h3 className="text-xl sm:text-2xl font-medium text-white">Spectrum AI Labs</h3>
             <p className="text-white/70 text-sm sm:text-base">
-              We build custom AI solutions that drive real business results.
+              AI automation agency helping businesses go AI-first.
             </p>
           </div>
 

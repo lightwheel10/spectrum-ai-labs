@@ -24,8 +24,8 @@ interface Service {
 
 const services: Service[] = [
   {
-    title: "Chatbot Development",
-    desc: "Smart chatbots that handle common tasks and make your business work better and faster.",
+    title: "AI Chatbots",
+    desc: "Deploy AI agents that handle customer inquiries 24/7, qualify leads automatically, and never take a day off. Reduce support costs by up to 80%.",
     icon: ChatBubbleLeftIcon,
     demo: {
       type: "chat",
@@ -34,7 +34,7 @@ const services: Service[] = [
   },
   {
     title: "Voice Agents",
-    desc: "Voice assistants that sound like real people to help with customer support and sales calls.",
+    desc: "AI that answers calls, books appointments, and handles customer conversations with human-like fluency. Scale your phone support without hiring.",
     icon: MicrophoneIcon,
     demo: {
       type: "voice",
@@ -44,18 +44,18 @@ const services: Service[] = [
     }
   },
   {
-    title: "Workflow Automations",
-    desc: "Link your apps together to remove boring tasks and make your work more accurate and simple.",
+    title: "Process Automation",
+    desc: "Connect your tools, eliminate manual data entry, and automate repetitive workflows. What takes hours now happens in seconds.",
     icon: CogIcon,
     steps: [
-      "New Framer form submission",
-      "Format & clean lead data in Zapier",
-      "Add lead to Airtable database"
+      "New lead comes in via form",
+      "AI enriches and qualifies data",
+      "Auto-routes to CRM + triggers follow-up"
     ]
   },
   {
-    title: "AI Consulting",
-    desc: "Find ways AI can help your business work better, faster and save money on daily operations.",
+    title: "AI Strategy",
+    desc: "Get a roadmap to become AI-first. We audit your operations, identify automation opportunities, and show you exactly where AI delivers the biggest ROI.",
     icon: ChartBarIcon,
     metrics: {
       efficiency: "+46%",

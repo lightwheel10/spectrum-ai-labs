@@ -46,9 +46,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Spectrum AI Labs | Custom AI Solutions for Business Growth</title>
-        <meta name="description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting. From strategy to deployment, we deliver." />
-        <meta name="keywords" content="AI solutions, custom AI development, chatbot development, voice agents, workflow automation, AI consulting, machine learning, business AI, artificial intelligence agency" />
+        <title>Spectrum AI Labs | AI Automation Agency - Make Your Business AI-First</title>
+        <meta name="description" content="AI automation agency helping businesses go AI-first. We implement AI into existing processes, build new AI-powered workflows, and provide strategic consulting to transform your operations." />
+        <meta name="keywords" content="AI automation agency, AI implementation, business process automation, AI consulting, workflow automation, AI integration, AI-first business, AI transformation, process optimization" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
         <link rel="icon" href="/favicon.ico" />
@@ -57,16 +57,16 @@ export default function Home() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://spectrumailabs.com/" />
-        <meta property="og:title" content="Spectrum AI Labs | Custom AI Solutions for Business Growth" />
-        <meta property="og:description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting." />
+        <meta property="og:title" content="Spectrum AI Labs | AI Automation Agency" />
+        <meta property="og:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
         <meta property="og:image" content="https://spectrumailabs.com/og-image.png" />
         <meta property="og:site_name" content="Spectrum AI Labs" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://spectrumailabs.com/" />
-        <meta name="twitter:title" content="Spectrum AI Labs | Custom AI Solutions for Business Growth" />
-        <meta name="twitter:description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting." />
+        <meta name="twitter:title" content="Spectrum AI Labs | AI Automation Agency" />
+        <meta name="twitter:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
         <meta name="twitter:image" content="https://spectrumailabs.com/og-image.png" />
         <meta name="twitter:creator" content="@buildwithparas" />
 
@@ -80,7 +80,7 @@ export default function Home() {
               "name": "Spectrum AI Labs",
               "url": "https://spectrumailabs.com",
               "logo": "https://spectrumailabs.com/logo.png",
-              "description": "Custom AI solutions that drive real business results",
+              "description": "AI automation agency helping businesses go AI-first through process implementation and consulting",
               "sameAs": [
                 "https://x.com/buildwithparas",
                 "https://www.linkedin.com/in/paras-tiwari-221a9b34b/"
@@ -92,23 +92,23 @@ export default function Home() {
               "service": [
                 {
                   "@type": "Service",
-                  "name": "Chatbot Development",
-                  "description": "Smart chatbots that handle common tasks and make your business work better"
+                  "name": "AI Process Implementation",
+                  "description": "Integrate AI into your existing business processes to boost efficiency and reduce costs"
                 },
                 {
                   "@type": "Service",
-                  "name": "Voice Agents",
-                  "description": "Voice assistants that sound like real people for customer support and sales"
+                  "name": "AI Workflow Creation",
+                  "description": "Design and build new AI-powered workflows tailored to your business needs"
                 },
                 {
                   "@type": "Service",
-                  "name": "Workflow Automation",
-                  "description": "Link your apps together to remove boring tasks and make work more accurate"
+                  "name": "AI-First Transformation",
+                  "description": "Strategic guidance to help your business adopt AI across all operations"
                 },
                 {
                   "@type": "Service",
                   "name": "AI Consulting",
-                  "description": "Find ways AI can help your business work better, faster and save money"
+                  "description": "Expert consulting to identify AI opportunities and create implementation roadmaps"
                 }
               ]
             })
