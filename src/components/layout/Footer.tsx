@@ -68,11 +68,11 @@ const Footer = () => {
           <div className="space-y-4 sm:space-y-6 mt-8 sm:mt-0">
             <h3 className="text-xl sm:text-2xl font-medium text-white">Social Media</h3>
             <div className="space-y-2 sm:space-y-4">
-              <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                LinkedIn
+              <Link href="https://x.com/buildwithparas" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+                Twitter
               </Link>
-              <Link href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
-                Youtube
+              <Link href="https://www.linkedin.com/in/paras-tiwari-221a9b34b/" target="_blank" rel="noopener noreferrer" className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors">
+                LinkedIn
               </Link>
             </div>
           </div>
