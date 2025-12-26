@@ -18,15 +18,16 @@ const AnimatedBackground = dynamic(
 const EmptyLoader = () => null;
 
 // Dynamically import sections with loading fallbacks
+// SEO: Enable SSR for key content sections so search engines can index them
 const Hero = dynamic(() => import('../components/sections/Hero'), { ssr: true, loading: EmptyLoader });
-const About = dynamic(() => import('../components/sections/About'), { ssr: false, loading: EmptyLoader });
-const Services = dynamic(() => import('../components/sections/Services'), { ssr: false, loading: EmptyLoader });
-const Process = dynamic(() => import('../components/sections/Process'), { ssr: false, loading: EmptyLoader });
+const About = dynamic(() => import('../components/sections/About'), { ssr: true, loading: EmptyLoader });
+const Services = dynamic(() => import('../components/sections/Services'), { ssr: true, loading: EmptyLoader });
+const Process = dynamic(() => import('../components/sections/Process'), { ssr: true, loading: EmptyLoader });
 const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false, loading: EmptyLoader });
-const Founder = dynamic(() => import('../components/sections/Founder'), { ssr: false, loading: EmptyLoader });
+const Founder = dynamic(() => import('../components/sections/Founder'), { ssr: true, loading: EmptyLoader });
 const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false, loading: EmptyLoader });
-const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: false, loading: EmptyLoader });
-const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: false, loading: EmptyLoader });
+const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: true, loading: EmptyLoader });
+const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: true, loading: EmptyLoader });
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -45,10 +46,75 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Spectrum AI Labs - Innovative AI Solutions</title>
-        <meta name="description" content="Spectrum AI Labs provides cutting-edge artificial intelligence solutions for businesses. Transform your operations with our innovative AI technology." />
+        <title>Spectrum AI Labs | Custom AI Solutions for Business Growth</title>
+        <meta name="description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting. From strategy to deployment, we deliver." />
+        <meta name="keywords" content="AI solutions, custom AI development, chatbot development, voice agents, workflow automation, AI consulting, machine learning, business AI, artificial intelligence agency" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="index, follow" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://spectrumailabs.com/" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://spectrumailabs.com/" />
+        <meta property="og:title" content="Spectrum AI Labs | Custom AI Solutions for Business Growth" />
+        <meta property="og:description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting." />
+        <meta property="og:image" content="https://spectrumailabs.com/og-image.png" />
+        <meta property="og:site_name" content="Spectrum AI Labs" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://spectrumailabs.com/" />
+        <meta name="twitter:title" content="Spectrum AI Labs | Custom AI Solutions for Business Growth" />
+        <meta name="twitter:description" content="We build custom AI solutions that drive real business results. Chatbots, voice agents, workflow automation, and AI consulting." />
+        <meta name="twitter:image" content="https://spectrumailabs.com/og-image.png" />
+        <meta name="twitter:creator" content="@buildwithparas" />
+
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Spectrum AI Labs",
+              "url": "https://spectrumailabs.com",
+              "logo": "https://spectrumailabs.com/logo.png",
+              "description": "Custom AI solutions that drive real business results",
+              "sameAs": [
+                "https://x.com/buildwithparas",
+                "https://www.linkedin.com/in/paras-tiwari-221a9b34b/"
+              ],
+              "founder": {
+                "@type": "Person",
+                "name": "Paras Tiwari"
+              },
+              "service": [
+                {
+                  "@type": "Service",
+                  "name": "Chatbot Development",
+                  "description": "Smart chatbots that handle common tasks and make your business work better"
+                },
+                {
+                  "@type": "Service",
+                  "name": "Voice Agents",
+                  "description": "Voice assistants that sound like real people for customer support and sales"
+                },
+                {
+                  "@type": "Service",
+                  "name": "Workflow Automation",
+                  "description": "Link your apps together to remove boring tasks and make work more accurate"
+                },
+                {
+                  "@type": "Service",
+                  "name": "AI Consulting",
+                  "description": "Find ways AI can help your business work better, faster and save money"
+                }
+              ]
+            })
+          }}
+        />
+
         <link rel="preconnect" href="https://cdn.worldvectorlogo.com" />
         <link rel="preconnect" href="https://cdn.cdnlogo.com" />
 

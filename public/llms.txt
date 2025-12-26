@@ -1,0 +1,35 @@
+# Spectrum AI Labs
+
+> Custom AI solutions that drive real business results.
+
+Spectrum AI Labs is an AI development agency specializing in building custom AI solutions for businesses. We work directly with clients to deliver enterprise-grade AI implementations.
+
+## Services
+
+- AI Strategy Consulting
+- Custom AI Development
+- AI Integration & Automation
+- Machine Learning Solutions
+- Natural Language Processing
+- Computer Vision Solutions
+- AI-Powered Chatbots
+- Workflow Automation
+
+## Industries We Serve
+
+- Healthcare
+- Finance
+- E-commerce
+- Real Estate
+- Legal
+- Manufacturing
+
+## Contact
+
+Website: https://spectrumailabs.com
+Twitter: https://x.com/buildwithparas
+LinkedIn: https://www.linkedin.com/in/paras-tiwari-221a9b34b/
+
+## About
+
+We build AI solutions from strategy to deployment. Our focus is on delivering measurable business results through custom AI implementations tailored to each client's specific needs.
