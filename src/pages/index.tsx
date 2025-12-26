@@ -11,10 +11,9 @@ import DelayedFooter from '../components/layout/DelayedFooter';
 // Dynamically import non-critical components
 const AnimatedBackground = dynamic(
   () => import('../components/layout/AnimatedBackground'),
-  { ssr: false } // Don't render on server for better performance
+  { ssr: false }
 );
 
-// FIX 26/12/2025: Consolidated duplicate EmptyLoader and SectionLoader into single component
 // Empty loader component to prevent flash of loading spinners
 const EmptyLoader = () => null;
 
@@ -24,10 +23,8 @@ const About = dynamic(() => import('../components/sections/About'), { ssr: false
 const Services = dynamic(() => import('../components/sections/Services'), { ssr: false, loading: EmptyLoader });
 const Process = dynamic(() => import('../components/sections/Process'), { ssr: false, loading: EmptyLoader });
 const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false, loading: EmptyLoader });
-// FIX 26/12/2025: Replaced Team with Founder section for solo founder agency
 const Founder = dynamic(() => import('../components/sections/Founder'), { ssr: false, loading: EmptyLoader });
 const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false, loading: EmptyLoader });
-// FIX 26/12/2025: Removed Pricing section - not needed for solo founder agency
 const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: false, loading: EmptyLoader });
 const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: false, loading: EmptyLoader });
 
@@ -37,11 +34,10 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-    
-    // Reduced loading time for better UX
+
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000); // Reduced from 3800ms to 3000ms
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -55,8 +51,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://cdn.worldvectorlogo.com" />
         <link rel="preconnect" href="https://cdn.cdnlogo.com" />
-        
-        {/* Inline critical CSS */}
+
         <style>{`
           body {
             background: #0A0A0A;
@@ -75,11 +70,8 @@ export default function Home() {
         `}</style>
       </Head>
 
-      {/* FIX 26/12/2025: Simplified - AnimatedBackground now shows static gradient immediately */}
-      {/* Background layer - static on SSR, animated after hydration */}
       {mounted ? <AnimatedBackground /> : <div className="fixed inset-0 z-0 bg-[#0A0A0A]" />}
 
-      {/* Content that transitions */}
       <AnimatePresence mode="wait">
         {mounted && loading ? (
           <LoadingScreen key="loading" />
@@ -92,58 +84,54 @@ export default function Home() {
             className="w-full overflow-x-hidden"
             style={{ willChange: 'opacity' }}
           >
-                <motion.main 
-                  key="main" 
-                  className="min-h-screen relative z-10 overflow-x-hidden"
-                >
-                  <Navbar />
-                  
-                  {/* Hero section - prioritize loading this first */}
-                  <section id="hero">
-                    <Hero />
-                  </section>
-                  
-                  <section id="about">
-                    <About />
-                  </section>
-                  
-                  <section id="services">
-                    <Services />
-                  </section>
-                  
-                  <section id="process">
-                    <Process />
-                  </section>
-                  
-                  <section id="industries">
-                    <Industries />
-                  </section>
-                  
-                  <section id="testimonials">
-                    <Testimonials />
-                  </section>
-                  
-                  
-                  <section id="founder">
-                    <Founder />
-                  </section>
-                  
-                  <section id="contact">
-                    <Contact />
-                  </section>
-                  
-                  <section id="faq">
-                    <FAQ />
-                  </section>
+            <motion.main
+              key="main"
+              className="min-h-screen relative z-10 overflow-x-hidden"
+            >
+              <Navbar />
 
-                  {/* Delayed Footer */}
-                  <DelayedFooter />
-                </motion.main>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+              <section id="hero">
+                <Hero />
+              </section>
 
-      {/* FIX 26/12/2025: SSR fallback - matches LoadingScreen to prevent visual jump on hydration */}
+              <section id="about">
+                <About />
+              </section>
+
+              <section id="services">
+                <Services />
+              </section>
+
+              <section id="process">
+                <Process />
+              </section>
+
+              <section id="industries">
+                <Industries />
+              </section>
+
+              <section id="testimonials">
+                <Testimonials />
+              </section>
+
+              <section id="founder">
+                <Founder />
+              </section>
+
+              <section id="contact">
+                <Contact />
+              </section>
+
+              <section id="faq">
+                <FAQ />
+              </section>
+
+              <DelayedFooter />
+            </motion.main>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
       {!mounted && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-4">
           <div className="relative z-10 flex flex-col items-center">
