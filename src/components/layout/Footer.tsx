@@ -43,6 +43,9 @@ const Footer = () => {
               <a href="#faq" onClick={(e) => handleAnchorClick(e, '#faq')} className="block text-white text-sm sm:text-base hover:text-amber-400 transition-colors cursor-pointer">
                 FAQ
               </a>
+              <span className="block text-white/50 text-sm sm:text-base cursor-default">
+                Blog
+              </span>
             </div>
           </div>
 
