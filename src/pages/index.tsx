@@ -52,22 +52,22 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="canonical" href="https://spectrumailabs.com/" />
+        <link rel="canonical" href="https://www.spectrumailabs.com/" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://spectrumailabs.com/" />
+        <meta property="og:url" content="https://www.spectrumailabs.com/" />
         <meta property="og:title" content="Spectrum AI Labs | AI Automation Agency" />
         <meta property="og:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
-        <meta property="og:image" content="https://spectrumailabs.com/og-image.png" />
+        <meta property="og:image" content="https://www.spectrumailabs.com/og-image.png" />
         <meta property="og:site_name" content="Spectrum AI Labs" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://spectrumailabs.com/" />
+        <meta name="twitter:url" content="https://www.spectrumailabs.com/" />
         <meta name="twitter:title" content="Spectrum AI Labs | AI Automation Agency" />
         <meta name="twitter:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
-        <meta name="twitter:image" content="https://spectrumailabs.com/og-image.png" />
+        <meta name="twitter:image" content="https://www.spectrumailabs.com/og-image.png" />
         <meta name="twitter:creator" content="@buildwithparas" />
 
         {/* Structured Data */}
@@ -78,8 +78,8 @@ export default function Home() {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Spectrum AI Labs",
-              "url": "https://spectrumailabs.com",
-              "logo": "https://spectrumailabs.com/logo.png",
+              "url": "https://www.spectrumailabs.com",
+              "logo": "https://www.spectrumailabs.com/logo.png",
               "description": "AI automation agency helping businesses go AI-first through process implementation and consulting",
               "sameAs": [
                 "https://x.com/buildwithparas",
@@ -109,6 +109,59 @@ export default function Home() {
                   "@type": "Service",
                   "name": "AI Consulting",
                   "description": "Expert consulting to identify AI opportunities and create implementation roadmaps"
+                }
+              ]
+            })
+          }}
+        />
+
+        {/* FAQ Structured Data for Rich Snippets */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What makes Spectrum AI Labs unique?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our AI solutions are built with cutting-edge technology and deep industry expertise to create truly tailored solutions. With a team of 9 experts, we focus on delivering higher accuracy and faster results than conventional approaches, making your organization more competitive in today's market."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is my company a good fit for Spectrum AI Labs?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We work with businesses across various industries including E-commerce, Real Estate, Legal, Finance, and Healthcare. If you're looking to leverage AI to improve efficiency, automate workflows, enhance customer interactions, or gain insights from your data, we're likely a good fit. Our team can assess your specific needs during a consultation."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How does your subscription model work?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We offer flexible subscription plans starting at $1997/month for our Starter plan, which includes 1 dedicated AI developer. Our Professional plan at $3997/month includes 2 dedicated developers and more advanced features. For larger organizations, we offer custom Enterprise solutions. All plans include the ability to cancel or pause anytime."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How long does the development phase take?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our development process follows a structured approach: Analyze & Plan, Build & Implement, and then Optimize & Scale. Development timelines vary based on project complexity, but we provide detailed roadmaps during our initial consultation and keep you updated throughout the process."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do you provide support after implementation?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolutely. We offer comprehensive post-implementation support including technical assistance, training, and ongoing optimization. Our subscription model ensures continuous improvement of your AI solutions, and our team remains available to ensure your technology evolves with your business needs."
+                  }
                 }
               ]
             })
