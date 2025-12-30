@@ -8,7 +8,9 @@ const RefundPolicy: NextPage = () => {
     <div className="min-h-screen flex flex-col bg-black">
       <Head>
         <title>Refund Policy | Spectrum AI Labs</title>
-        <meta name="description" content="Refund Policy for Spectrum AI Labs" />
+        <meta name="description" content="Refund Policy for Spectrum AI Labs - Learn about our refund and cancellation policies for AI automation services." />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.spectrumailabs.com/refund" />
       </Head>
 
       <main className="flex-grow">

@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://spectrumailabs.com/sitemap.xml
+Sitemap: https://www.spectrumailabs.com/sitemap.xml

@@ -8,7 +8,9 @@ const TermsAndConditions: NextPage = () => {
     <div className="min-h-screen flex flex-col bg-black">
       <Head>
         <title>Terms & Conditions | Spectrum AI Labs</title>
-        <meta name="description" content="Terms and Conditions for Spectrum AI Labs" />
+        <meta name="description" content="Terms and Conditions for Spectrum AI Labs - AI automation agency helping businesses go AI-first." />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.spectrumailabs.com/terms" />
       </Head>
 
       <main className="flex-grow">

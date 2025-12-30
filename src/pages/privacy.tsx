@@ -8,7 +8,9 @@ const PrivacyPolicy: NextPage = () => {
     <div className="min-h-screen flex flex-col bg-black">
       <Head>
         <title>Privacy Policy | Spectrum AI Labs</title>
-        <meta name="description" content="Privacy Policy for Spectrum AI Labs" />
+        <meta name="description" content="Privacy Policy for Spectrum AI Labs - Learn how we collect, use, and protect your personal information." />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.spectrumailabs.com/privacy" />
       </Head>
 
       <main className="flex-grow">
