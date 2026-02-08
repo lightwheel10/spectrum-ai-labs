@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@calcom/embed-react": "^1.5.2",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",

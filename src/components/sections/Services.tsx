@@ -3,6 +3,7 @@ import VoiceWaveform from '../VoiceWaveform';
 import ChatSimulation from '../ChatSimulation';
 import WorkflowAnimation from '../WorkflowAnimation';
 import MetricsChart from '../MetricsChart';
+import { useEffect, useRef, useState } from 'react';
 
 interface Service {
   title: string;
@@ -65,6 +66,84 @@ const services: Service[] = [
   }
 ];
 
+const DemoPlaceholder = ({ className }: { className: string }) => (
+  <div className={`rounded-lg border border-white/10 bg-white/[0.03] animate-pulse ${className}`} />
+);
+
+const ServiceCard = ({ service }: { service: Service }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isActivated, setIsActivated] = useState(false);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+
+    // Mount expensive demo widgets only when a card is near viewport.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsActivated(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '180px 0px' }
+    );
+
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className="p-6 sm:p-8 rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm h-auto sm:h-[440px] overflow-hidden"
+    >
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white mb-3 sm:mb-4">{service.title}</h3>
+      <p className="text-white/60 mb-4 sm:mb-6 text-base sm:text-lg leading-relaxed">
+        {service.desc}
+      </p>
+
+      {service.demo?.type === "chat" && (
+        <div className="rounded-lg overflow-hidden">
+          {isActivated ? <ChatSimulation /> : <DemoPlaceholder className="h-[232px]" />}
+        </div>
+      )}
+
+      {service.demo?.type === "voice" && (
+        <div className="rounded-lg overflow-hidden flex flex-col items-center">
+          {isActivated ? (
+            <>
+              <div className="h-[180px] sm:h-[240px] relative w-full max-w-[280px] mx-auto">
+                <VoiceWaveform />
+              </div>
+              <div className="text-[#E5855E] text-center py-2 sm:py-3 text-sm">
+                Voice Agent
+              </div>
+            </>
+          ) : (
+            <DemoPlaceholder className="h-[232px] w-full max-w-[280px]" />
+          )}
+        </div>
+      )}
+
+      {service.steps && (
+        <div className="overflow-hidden sm:h-[320px] h-[270px]">
+          {isActivated ? (
+            <WorkflowAnimation steps={service.steps} />
+          ) : (
+            <DemoPlaceholder className="h-[270px] sm:h-[320px]" />
+          )}
+        </div>
+      )}
+
+      {service.metrics && (
+        <div className="h-[200px] sm:h-auto">
+          {isActivated ? <MetricsChart /> : <DemoPlaceholder className="h-[200px]" />}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Services = () => {
   return (
     <section id="services" className="py-20 relative overflow-x-hidden">
@@ -76,44 +155,7 @@ const Services = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {services.map((service) => (
-            <div
-              key={service.title}
-              className="p-6 sm:p-8 rounded-xl border border-white/10 bg-black/50 backdrop-blur-sm h-auto sm:h-[440px] overflow-hidden"
-            >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-white mb-3 sm:mb-4">{service.title}</h3>
-              <p className="text-white/60 mb-4 sm:mb-6 text-base sm:text-lg leading-relaxed">
-                {service.desc}
-              </p>
-
-              {service.demo?.type === "chat" && (
-                <div className="rounded-lg overflow-hidden">
-                  <ChatSimulation />
-                </div>
-              )}
-
-              {service.demo?.type === "voice" && (
-                <div className="rounded-lg overflow-hidden flex flex-col items-center">
-                  <div className="h-[180px] sm:h-[240px] relative w-full max-w-[280px] mx-auto">
-                    <VoiceWaveform />
-                  </div>
-                  <div className="text-[#E5855E] text-center py-2 sm:py-3 text-sm">
-                    Voice Agent
-                  </div>
-                </div>
-              )}
-
-              {service.steps && (
-                <div className="overflow-hidden sm:h-[320px] h-[270px]">
-                  <WorkflowAnimation steps={service.steps} />
-                </div>
-              )}
-
-              {service.metrics && (
-                <div className="h-[200px] sm:h-auto">
-                  <MetricsChart />
-                </div>
-              )}
-            </div>
+            <ServiceCard key={service.title} service={service} />
           ))}
         </div>
       </div>

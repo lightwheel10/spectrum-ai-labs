@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { FaShoppingCart, FaHospital, FaMicrophone } from 'react-icons/fa';
 import { BiBuildingHouse } from 'react-icons/bi';
@@ -53,34 +53,34 @@ const industryChats: Record<IndustryName, ChatMessage[]> = {
 // Industry-specific tools
 const industryTools: Record<IndustryName, Tool[]> = {
   "E-commerce": [
-    { name: 'Shopify', logo: 'https://cdn.worldvectorlogo.com/logos/shopify.svg' },
-    { name: 'WooCommerce', logo: 'https://cdn.worldvectorlogo.com/logos/woocommerce.svg' },
-    { name: 'PayPal', logo: 'https://www.paypalobjects.com/webstatic/icon/pp258.png' },
-    { name: 'Stripe', logo: 'https://cdn.worldvectorlogo.com/logos/stripe-4.svg' }
+    { name: 'Shopify', logo: '/logos/tools/shopify.svg' },
+    { name: 'WooCommerce', logo: '/logos/tools/woocommerce.svg' },
+    { name: 'PayPal', logo: '/logos/tools/paypal.png' },
+    { name: 'Stripe', logo: '/logos/tools/stripe.svg' }
   ],
   "Real Estate": [
-    { name: 'Salesforce', logo: 'https://cdn.worldvectorlogo.com/logos/salesforce-2.svg' },
-    { name: 'HubSpot', logo: 'https://cdn.worldvectorlogo.com/logos/hubspot-1.svg' },
-    { name: 'Google', logo: 'https://cdn.cdnlogo.com/logos/g/35/google-icon.svg' },
-    { name: 'Zoom', logo: 'https://download.logo.wine/logo/Zoom_Video_Communications/Zoom_Video_Communications-Logo.wine.png' }
+    { name: 'Salesforce', logo: '/logos/tools/salesforce.svg' },
+    { name: 'HubSpot', logo: '/logos/tools/hubspot.svg' },
+    { name: 'Google', logo: '/logos/tools/google.svg' },
+    { name: 'Zoom', logo: '/logos/tools/zoom.png' }
   ],
   "Legal": [
-    { name: 'Dropbox', logo: 'https://cdn.worldvectorlogo.com/logos/dropbox-1.svg' },
-    { name: 'Google', logo: 'https://cdn.cdnlogo.com/logos/g/35/google-icon.svg' },
-    { name: 'Microsoft', logo: 'https://cdn.worldvectorlogo.com/logos/microsoft-5.svg' },
-    { name: 'Adobe', logo: 'https://cdn.worldvectorlogo.com/logos/adobe-2.svg' }
+    { name: 'Dropbox', logo: '/logos/tools/dropbox.svg' },
+    { name: 'Google', logo: '/logos/tools/google.svg' },
+    { name: 'Microsoft', logo: '/logos/tools/microsoft.svg' },
+    { name: 'Adobe', logo: '/logos/tools/adobe.svg' }
   ],
   "Finance": [
-    { name: 'Stripe', logo: 'https://cdn.worldvectorlogo.com/logos/stripe-4.svg' },
-    { name: 'Coinbase', logo: 'https://cdn.worldvectorlogo.com/logos/coinbase-1.svg' },
-    { name: 'PayPal', logo: 'https://www.paypalobjects.com/webstatic/icon/pp258.png' },
-    { name: 'Wise', logo: 'https://wise.com/public-resources/assets/logos/wise/brand_logo.svg' }
+    { name: 'Stripe', logo: '/logos/tools/stripe.svg' },
+    { name: 'Coinbase', logo: '/logos/tools/coinbase.svg' },
+    { name: 'PayPal', logo: '/logos/tools/paypal.png' },
+    { name: 'Wise', logo: '/logos/tools/wise.svg' }
   ],
   "Healthcare": [
-    { name: 'Microsoft', logo: 'https://cdn.worldvectorlogo.com/logos/microsoft-5.svg' },
-    { name: 'Salesforce', logo: 'https://cdn.worldvectorlogo.com/logos/salesforce-2.svg' },
-    { name: 'Oracle', logo: 'https://cdn.worldvectorlogo.com/logos/oracle-2.svg' },
-    { name: 'Google', logo: 'https://cdn.cdnlogo.com/logos/g/35/google-icon.svg' }
+    { name: 'Microsoft', logo: '/logos/tools/microsoft.svg' },
+    { name: 'Salesforce', logo: '/logos/tools/salesforce.svg' },
+    { name: 'Oracle', logo: '/logos/tools/oracle.svg' },
+    { name: 'Google', logo: '/logos/tools/google.svg' }
   ]
 };
 
@@ -114,6 +114,7 @@ interface SolutionVisualProps {
 const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const reduceMotion = useReducedMotion();
   // FIX 26/12/2025: Initialize with default waveform to prevent empty flash on first render
   const [waveform, setWaveform] = useState<number[]>(DEFAULT_WAVEFORM);
   const [messageIndex, setMessageIndex] = useState(0);
@@ -123,6 +124,7 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
 
   // FIX 26/12/2025: Generate waveform on client side only to avoid SSR mismatch
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     setWaveform(getIndustryWaveform(industry, window.innerWidth));
   }, [industry]);
 
@@ -145,8 +147,8 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
   }, []);
 
   useEffect(() => {
-    // Only run animations when visible
-    if (!isVisible) return;
+    // Disable timer-based animation for users requesting reduced motion.
+    if (!isVisible || reduceMotion) return;
 
     let interval: NodeJS.Timeout | null = null;
 
@@ -167,10 +169,12 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [type, industry, currentChat.length, currentTools.length, isVisible]);
+  }, [type, industry, currentChat.length, currentTools.length, isVisible, reduceMotion]);
 
   // Add resize handler to update waveform when screen size changes
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleResize = () => {
       if (type === 'voice') {
         setWaveform(getIndustryWaveform(industry));
@@ -190,11 +194,11 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
             <motion.div
               key={idx}
               initial={{ opacity: 0, x: msg.isBot ? -10 : 10 }}
-              animate={{ 
+              animate={{
                 opacity: idx === messageIndex ? 1 : 0,
                 x: 0
               }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: reduceMotion ? 0 : 0.2 }}
               className={`flex items-center gap-1 sm:gap-2 ${msg.isBot ? '' : 'justify-end'}`}
             >
               {msg.isBot && (
@@ -228,9 +232,9 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
           animate={{ opacity: messageIndex === currentChat.length - 1 ? 1 : 0 }}
           className="absolute bottom-2 sm:bottom-3 left-3 sm:left-4 flex items-center gap-1"
         >
-          <div className="w-1 h-1 rounded-full bg-[#E5855E]/40 animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-1 h-1 rounded-full bg-[#E5855E]/40 animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-1 h-1 rounded-full bg-[#E5855E]/40 animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className={`w-1 h-1 rounded-full bg-[#E5855E]/40 ${reduceMotion ? '' : 'animate-bounce'}`} style={{ animationDelay: '0ms' }} />
+          <div className={`w-1 h-1 rounded-full bg-[#E5855E]/40 ${reduceMotion ? '' : 'animate-bounce'}`} style={{ animationDelay: '150ms' }} />
+          <div className={`w-1 h-1 rounded-full bg-[#E5855E]/40 ${reduceMotion ? '' : 'animate-bounce'}`} style={{ animationDelay: '300ms' }} />
         </motion.div>
       </div>
     );
@@ -244,9 +248,9 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
             <motion.div
               key={idx}
               initial={{ height: 2 }}
-              animate={{ height: `${height}%` }}
+              animate={{ height: reduceMotion ? `${Math.max(height * 0.65, 28)}%` : `${height}%` }}
               transition={{ 
-                duration: 0.2,
+                duration: reduceMotion ? 0 : 0.2,
                 ease: "easeInOut"
               }}
               className="w-[2px] sm:w-[3px] md:w-[4px] bg-gradient-to-t from-[#E5855E]/10 via-[#E5855E] to-[#E5855E]/10 rounded-full shadow-[0_0_8px_rgba(229,133,94,0.3)]"
@@ -276,9 +280,10 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
                     zIndex: isCenter ? 2 : 1
                   }}
                   transition={{ 
-                    type: "spring",
+                    type: reduceMotion ? "tween" : "spring",
                     stiffness: 300,
                     damping: 30,
+                    duration: reduceMotion ? 0.2 : undefined,
                     opacity: { duration: 0.2 }
                   }}
                   className="absolute flex flex-col items-center"
@@ -291,10 +296,10 @@ const SolutionVisual = ({ type, industry }: SolutionVisualProps) => {
                       alt={tool.name}
                       width={28}
                       height={28}
+                      sizes="(max-width: 768px) 24px, 28px"
                       className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 object-contain transition-all duration-300 ${
                         isCenter ? 'brightness-150 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]' : 'brightness-50'
                       }`}
-                      unoptimized={true}
                     />
                   </div>
                   <span className={`text-[10px] sm:text-[11px] md:text-[13px] mt-2 sm:mt-3 transition-all duration-300 ${

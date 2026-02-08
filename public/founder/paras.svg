@@ -1,0 +1,12 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512' role='img' aria-label='Paras Tiwari'>
+  <defs>
+    <linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' stop-color='#E5855E'/>
+      <stop offset='100%' stop-color='#EA580C'/>
+    </linearGradient>
+  </defs>
+  <rect width='512' height='512' rx='256' fill='#0A0A0A'/>
+  <circle cx='256' cy='220' r='96' fill='url(#g)' opacity='0.9'/>
+  <path d='M128 448c18-78 68-120 128-120s110 42 128 120' fill='url(#g)' opacity='0.88'/>
+  <text x='256' y='470' text-anchor='middle' font-size='44' font-family='Arial, sans-serif' font-weight='700' fill='white'>PT</text>
+</svg>

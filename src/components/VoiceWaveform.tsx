@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const VoiceWaveform = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,6 +7,8 @@ const VoiceWaveform = () => {
   const animationRef = useRef<number | undefined>(undefined);
   const timeRef = useRef(0);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     // Check if we're on a mobile device initially
@@ -26,8 +28,20 @@ const VoiceWaveform = () => {
   }, []);
 
   useEffect(() => {
-    // Skip canvas animation for mobile
-    if (isMobileView || !canvasRef.current || !containerRef.current) return;
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Skip canvas animation for mobile/reduced motion/off-screen.
+    if (isMobileView || reduceMotion || !isVisible || !canvasRef.current || !containerRef.current) return;
 
     const resizeCanvas = () => {
       const container = containerRef.current;
@@ -134,7 +148,7 @@ const VoiceWaveform = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isMobileView]);
+  }, [isMobileView, reduceMotion, isVisible]);
 
   return (
     <div ref={containerRef} className="absolute inset-0">
@@ -147,21 +161,24 @@ const VoiceWaveform = () => {
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div 
           className="absolute w-28 sm:w-40 h-28 sm:h-40 rounded-full bg-[#E5855E]"
-          animate={{
+          animate={reduceMotion ? { opacity: 0.05, scale: 1, filter: "blur(12px)" } : {
             opacity: [0.03, 0.08, 0.03],
             scale: [1, 1.1, 1],
             filter: ["blur(12px)", "blur(16px)", "blur(12px)"]
           }}
           transition={{
             duration: 2,
-            repeat: Infinity,
+            repeat: reduceMotion ? 0 : Infinity,
             ease: "easeInOut"
           }}
         />
         
         <motion.div
           className="relative w-20 sm:w-28 h-20 sm:h-28 rounded-full border border-[#E5855E]/30 z-10"
-          animate={{
+          animate={reduceMotion ? {
+            scale: 1,
+            boxShadow: '0 0 15px 3px rgba(229, 133, 94, 0.15), inset 0 0 10px 3px rgba(229, 133, 94, 0.1)'
+          } : {
             scale: [1, 1.02, 1],
             boxShadow: [
               '0 0 15px 3px rgba(229, 133, 94, 0.15), inset 0 0 10px 3px rgba(229, 133, 94, 0.1)',
@@ -171,19 +188,19 @@ const VoiceWaveform = () => {
           }}
           transition={{
             duration: 1.5,
-            repeat: Infinity,
+            repeat: reduceMotion ? 0 : Infinity,
             ease: "easeInOut"
           }}
         >
           <motion.div 
             className="absolute inset-0 rounded-full bg-[#E5855E]"
-            animate={{
+            animate={reduceMotion ? { opacity: 0.1, filter: "blur(3px)" } : {
               opacity: [0.05, 0.2, 0.05],
               filter: ["blur(3px)", "blur(5px)", "blur(3px)"]
             }}
             transition={{
               duration: 1.5,
-              repeat: Infinity,
+              repeat: reduceMotion ? 0 : Infinity,
               ease: "easeInOut"
             }}
           />
@@ -192,12 +209,12 @@ const VoiceWaveform = () => {
               className="w-8 h-8 sm:w-10 sm:h-10 text-white"
               viewBox="0 0 24 24" 
               fill="none"
-              animate={{
+              animate={reduceMotion ? { scale: 1 } : {
                 scale: [1, 1.05, 1]
               }}
               transition={{
                 duration: 1.5,
-                repeat: Infinity,
+                repeat: reduceMotion ? 0 : Infinity,
                 ease: "easeInOut"
               }}
             >

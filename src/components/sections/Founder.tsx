@@ -71,12 +71,12 @@ const Founder = () => {
         >
           <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-2 border-[#E5855E]/20 hover:border-[#E5855E] transition-all duration-300 flex-shrink-0">
             <Image
-              src="https://media.licdn.com/dms/image/v2/D4E03AQFOBeANsQyMAw/profile-displayphoto-scale_200_200/B4EZnKRZLYIkAc-/0/1760035183634?e=1768435200&v=beta&t=FE4usurAnJAdd7FXza7CEbVxa74xdVO6gzNysnC1FF4"
+              // Local asset avoids runtime dependency on expiring LinkedIn image URLs.
+              src="/founder/paras.svg"
               alt="Paras - Founder"
               fill
               className="object-cover"
               sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, 192px"
-              unoptimized
             />
           </div>
 

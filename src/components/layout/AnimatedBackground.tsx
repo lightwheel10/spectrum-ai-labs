@@ -1,307 +1,204 @@
-import { motion } from 'framer-motion';
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-interface Point {
+type Particle = {
   x: number;
   y: number;
   vx: number;
   vy: number;
-}
+  size: number;
+};
 
-interface Line {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  opacity: number;
-}
-
-// FIX 26/12/2025: Added interface for decorative line
-interface DecorativeLine {
-  id: string;
-  x1: string;
-  y1: string;
-  x2: string;
-  y2: string;
-  duration: number;
-}
-
-// FIX 26/12/2025: Added interface for star
-interface Star {
-  id: string;
+type Star = {
   x: number;
   y: number;
-  opacity: number;
-  duration: number;
-}
+  phase: number;
+  speed: number;
+  baseOpacity: number;
+};
 
-// Restored original numbers of elements but kept other optimizations
-const NUM_POINTS = 30; // Restored original value
-const MAX_DISTANCE = 300; // Restored original value
-const ANIMATION_INTERVAL = 50; // Kept optimization (increased from 30)
-const NUM_DECORATIVE_LINES = 8; // Restored original value
-const NUM_STARS = 20; // Restored original value
+type Scene = {
+  width: number;
+  height: number;
+  particles: Particle[];
+  stars: Star[];
+};
+
+const MOBILE_BREAKPOINT = 768;
+const DESKTOP_PARTICLES = 24;
+const MOBILE_PARTICLES = 14;
+const DESKTOP_STARS = 24;
+const MOBILE_STARS = 14;
+const MAX_LINK_DISTANCE = 180;
+
+const createParticles = (count: number, width: number, height: number): Particle[] => {
+  return Array.from({ length: count }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    vx: (Math.random() - 0.5) * 0.45,
+    vy: (Math.random() - 0.5) * 0.45,
+    size: Math.random() * 1.4 + 0.8,
+  }));
+};
+
+const createStars = (count: number, width: number, height: number): Star[] => {
+  return Array.from({ length: count }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.9 + 0.3,
+    baseOpacity: Math.random() * 0.35 + 0.15,
+  }));
+};
 
 const AnimatedBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [points, setPoints] = useState<Point[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sceneRef = useRef<Scene>({
+    width: 0,
+    height: 0,
+    particles: [],
+    stars: [],
+  });
   const [isVisible, setIsVisible] = useState(true);
-  // FIX 26/12/2025: Store decorative lines in state to avoid SSR hydration mismatch
-  const [decorativeLines, setDecorativeLines] = useState<DecorativeLine[]>([]);
-  // FIX 26/12/2025: Store stars in state to avoid SSR hydration mismatch
-  const [starsState, setStarsState] = useState<Star[]>([]);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
-  // Memoize the resize handler to prevent recreation on each render
-  const handleResize = useCallback(() => {
-    setDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setReduceMotion(mediaQuery.matches);
+
+    updateMotionPreference();
+    mediaQuery.addEventListener('change', updateMotionPreference);
+
+    return () => mediaQuery.removeEventListener('change', updateMotionPreference);
   }, []);
 
-  // Intersection Observer to pause animation when off-screen
   useEffect(() => {
     if (!containerRef.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 } // Trigger when at least 10% visible
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.05 }
     );
 
     observer.observe(containerRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    // Only run client-side
-    if (typeof window === 'undefined') return;
+    if (reduceMotion || !isVisible || typeof window === 'undefined') return;
+    if (!canvasRef.current) return;
 
-    setDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
-    setMounted(true);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [handleResize]);
+    let rafId = 0;
+    let lastFrame = performance.now();
 
-  // Generate initial points when dimensions change
-  useEffect(() => {
-    if (!mounted || dimensions.width === 0) return;
+    // Rebuild scene on resize to keep particle density proportional.
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isMobile = width < MOBILE_BREAKPOINT;
+      const particleCount = isMobile ? MOBILE_PARTICLES : DESKTOP_PARTICLES;
+      const starCount = isMobile ? MOBILE_STARS : DESKTOP_STARS;
 
-    const newPoints = Array.from({ length: NUM_POINTS }, () => ({
-      x: Math.random() * dimensions.width,
-      y: Math.random() * dimensions.height,
-      vx: (Math.random() - 0.5) * 1, // Restored original velocity
-      vy: (Math.random() - 0.5) * 1, // Restored original velocity
-    }));
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    setPoints(newPoints);
-  }, [mounted, dimensions]);
-
-  // Separate effect for animation that respects visibility
-  useEffect(() => {
-    if (!mounted || dimensions.width === 0 || !isVisible) return;
-
-    const animate = () => {
-      setPoints(currentPoints =>
-        currentPoints.map(point => ({
-          x: ((point.x + point.vx + dimensions.width) % dimensions.width),
-          y: ((point.y + point.vy + dimensions.height) % dimensions.height),
-          vx: point.vx,
-          vy: point.vy,
-        }))
-      );
+      sceneRef.current = {
+        width,
+        height,
+        particles: createParticles(particleCount, width, height),
+        stars: createStars(starCount, width, height),
+      };
     };
 
-    const interval = setInterval(animate, ANIMATION_INTERVAL);
-    return () => clearInterval(interval);
-  }, [mounted, dimensions, isVisible]);
+    const draw = (timestamp: number) => {
+      const delta = Math.min((timestamp - lastFrame) / 16.67, 2);
+      lastFrame = timestamp;
 
-  // Calculate lines between nearby points - kept optimizations but restored max connections
-  const lines = useMemo(() => {
-    if (points.length === 0) return [];
-    
-    const result: Line[] = [];
-    const maxDistanceSquared = MAX_DISTANCE * MAX_DISTANCE;
-    
-    for (let i = 0; i < points.length; i++) {
-      // Removed connection limit to restore original behavior
-      for (let j = i + 1; j < points.length; j++) {
-        const dx = points[i].x - points[j].x;
-        const dy = points[i].y - points[j].y;
-        const distanceSquared = dx * dx + dy * dy;
-        
-        if (distanceSquared < maxDistanceSquared) {
-          const opacity = (1 - Math.sqrt(distanceSquared) / MAX_DISTANCE) * 0.8; // Restored original opacity
-          result.push({
-            x1: points[i].x,
-            y1: points[i].y,
-            x2: points[j].x,
-            y2: points[j].y,
-            opacity,
-          });
+      const scene = sceneRef.current;
+      const maxDistanceSq = MAX_LINK_DISTANCE * MAX_LINK_DISTANCE;
+
+      ctx.clearRect(0, 0, scene.width, scene.height);
+
+      // Draw network lines and update particle positions in one pass.
+      for (let i = 0; i < scene.particles.length; i += 1) {
+        const particle = scene.particles[i];
+        particle.x += particle.vx * delta;
+        particle.y += particle.vy * delta;
+
+        if (particle.x < 0) particle.x += scene.width;
+        if (particle.y < 0) particle.y += scene.height;
+        if (particle.x > scene.width) particle.x -= scene.width;
+        if (particle.y > scene.height) particle.y -= scene.height;
+
+        for (let j = i + 1; j < scene.particles.length; j += 1) {
+          const other = scene.particles[j];
+          const dx = particle.x - other.x;
+          const dy = particle.y - other.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < maxDistanceSq) {
+            const opacity = (1 - Math.sqrt(distSq) / MAX_LINK_DISTANCE) * 0.2;
+            ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
+            ctx.lineWidth = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(other.x, other.y);
+            ctx.stroke();
+          }
         }
       }
-    }
-    
-    return result;
-  }, [points]);
 
-  // FIX 26/12/2025: Generate decorative lines only on client-side mount to prevent SSR hydration mismatch
-  useEffect(() => {
-    if (!mounted) return;
+      for (const particle of scene.particles) {
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-    const lines = Array.from({ length: NUM_DECORATIVE_LINES }, (_, i) => ({
-      id: `decor-line-${i}`,
-      x1: `${Math.random() * 100}%`,
-      y1: `${Math.random() * 100}%`,
-      x2: `${Math.random() * 100}%`,
-      y2: `${Math.random() * 100}%`,
-      duration: Math.random() * 2 + 2
-    }));
-    setDecorativeLines(lines);
-  }, [mounted]);
+      // Stars are cheap twinkles and stay independent of particle links.
+      for (const star of scene.stars) {
+        const twinkle = (Math.sin(timestamp * 0.001 * star.speed + star.phase) + 1) / 2;
+        const opacity = star.baseOpacity + twinkle * 0.15;
+        ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+        ctx.fillRect(star.x, star.y, 1.5, 1.5);
+      }
 
-  // FIX 26/12/2025: Generate stars only on client-side mount to prevent SSR hydration mismatch
-  useEffect(() => {
-    if (!mounted || dimensions.width === 0) return;
+      rafId = window.requestAnimationFrame(draw);
+    };
 
-    const newStars = Array.from({ length: NUM_STARS }, (_, i) => ({
-      id: `star-${i}`,
-      x: Math.random() * dimensions.width,
-      y: Math.random() * dimensions.height,
-      opacity: Math.random() * 0.5 + 0.25,
-      duration: Math.random() * 10 + 10
-    }));
-    setStarsState(newStars);
-  }, [mounted, dimensions]);
+    resize();
+    window.addEventListener('resize', resize);
+    rafId = window.requestAnimationFrame(draw);
 
-  // FIX 26/12/2025: Return static background instead of null to prevent flash
-  // The static gradient matches the final state to eliminate visual jump
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.cancelAnimationFrame(rafId);
+    };
+  }, [isVisible, reduceMotion]);
 
   return (
     <div ref={containerRef} className="fixed inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
-      {/* Background Gradient */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to right, rgba(10,10,10,0.9), rgba(239, 68, 68, 0.15)), radial-gradient(circle at top right, rgba(234, 88, 12, 0.25), transparent 50%)',
-          backgroundBlendMode: 'multiply'
+          background:
+            'linear-gradient(to right, rgba(10,10,10,0.94), rgba(239, 68, 68, 0.12)), radial-gradient(circle at top right, rgba(234, 88, 12, 0.2), transparent 50%)',
+          backgroundBlendMode: 'multiply',
         }}
       />
-
-      {/* Network and Line Animations - restored original complexity */}
-      {/* FIX 26/12/2025: Only render animated elements after mount to prevent hydration mismatch */}
-      {mounted && (
-        <div className="absolute inset-0 overflow-hidden">
-          <svg className="absolute w-full h-full">
-            <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style={{ stopColor: 'rgba(255,255,255,0.3)' }} />
-                <stop offset="100%" style={{ stopColor: 'rgba(255,255,255,0.1)' }} />
-              </linearGradient>
-            </defs>
-
-            {/* Network Lines */}
-            {lines.map((line, i) => (
-              <motion.line
-                key={`network-line-${i}`}
-                x1={line.x1}
-                y1={line.y1}
-                x2={line.x2}
-                y2={line.y2}
-                stroke="rgba(255,255,255,0.4)"
-                strokeWidth="0.75"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: line.opacity }}
-                transition={{ duration: 0.5 }}
-              />
-            ))}
-
-            {/* Network Dots */}
-            {points.map((point, i) => (
-              <motion.circle
-                key={`point-${i}`}
-                cx={point.x}
-                cy={point.y}
-                r="2"
-                fill="rgba(255,255,255,1)"
-                initial={{ scale: 0 }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [1, 0.8, 1]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  repeatDelay: 1
-                }}
-              />
-            ))}
-
-            {/* Decorative Lines */}
-            {decorativeLines.map((line) => (
-              <motion.line
-                key={line.id}
-                x1={line.x1}
-                y1={line.y1}
-                x2={line.x2}
-                y2={line.y2}
-                stroke="url(#lineGradient)"
-                strokeWidth="1"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 0.5 }}
-                transition={{
-                  duration: line.duration,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                  repeatDelay: 0.5
-                }}
-              />
-            ))}
-          </svg>
-        </div>
-      )}
-
-      {/* Animated Stars */}
-      {/* FIX 26/12/2025: Only render stars after mount */}
-      {mounted && (
-        <div className="absolute inset-0">
-          {starsState.map((star) => (
-            <motion.div
-              key={star.id}
-              className="absolute w-[2px] h-[2px] bg-white rounded-full"
-              initial={{
-                opacity: star.opacity,
-                x: star.x,
-                y: star.y,
-              }}
-              animate={{
-                opacity: [null, 0, star.opacity, 0],
-              }}
-              transition={{
-                duration: star.duration,
-                repeat: Infinity,
-                ease: "linear",
-                repeatDelay: 1
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {!reduceMotion && <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />}
     </div>
   );
 };
 
-export default AnimatedBackground; 
+export default AnimatedBackground;

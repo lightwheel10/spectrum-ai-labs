@@ -17,8 +17,12 @@ export const GlowingButton = ({
   onClick, 
   size = 'default', 
   fullWidth = false,
+  skipCalendar,
   ...rest 
 }: GlowingButtonProps) => {
+  // Avoid forwarding skipCalendar to DOM.
+  void skipCalendar;
+
   // Split the className into an array and map CSS module classes
   const cssModuleClasses = className.split(' ').map(cls => styles[cls] || cls).join(' ');
   const isStatic = className.includes('static');
@@ -28,6 +32,7 @@ export const GlowingButton = ({
   
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`${styles['glowing-button']} ${styles[size]} ${fullWidthClass} ${cssModuleClasses}`}
       style={{

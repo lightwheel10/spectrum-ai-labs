@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 // FIX 26/12/2025: Added useMemo for proper animation width calculation
 // FIX 26/12/2025: Removed unused useRef and useEffect imports
@@ -53,8 +53,8 @@ const TwitterCard = ({
             src={image}
             alt={name}
             fill
-            unoptimized
             className="object-cover"
+            sizes="48px"
           />
         </div>
         <div>
@@ -116,8 +116,8 @@ const LinkedInCard = ({
             src={image}
             alt={name}
             fill
-            unoptimized
             className="object-cover"
+            sizes="48px"
           />
         </div>
         <div>
@@ -139,6 +139,7 @@ const LinkedInCard = ({
 const Testimonials = () => {
   // FIX 26/12/2025: Removed unused carouselRef
   const [isPaused, setIsPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
   // FIX 26/12/2025: Removed mounted state - animation now uses CSS variables in globals.css
 
   // Twitter-style testimonials
@@ -257,9 +258,7 @@ const Testimonials = () => {
     | { type: 'twitter'; data: TwitterTestimonial; id: string }
     | { type: 'linkedin'; data: LinkedInTestimonial; id: string };
 
-  // Create a collage-like arrangement with staggered heights
-  const createCollageArrangement = () => {
-    // Combine all testimonials
+  const carouselItems = (() => {
     const allItems: TestimonialItem[] = [
       ...twitterTestimonials.map((item, index) => ({ 
         type: 'twitter' as const, 
@@ -272,12 +271,10 @@ const Testimonials = () => {
         id: `linkedin-${index}` 
       })),
     ];
-    
-    // Duplicate for infinite scroll
-    return [...allItems, ...allItems];
-  };
 
-  const carouselItems = createCollageArrangement();
+    // Keep static cards for reduced-motion users.
+    return reduceMotion ? allItems : [...allItems, ...allItems];
+  })();
 
   // Handle mouse events for pausing the carousel
   const handleMouseEnter = () => setIsPaused(true);
@@ -286,10 +283,12 @@ const Testimonials = () => {
   // FIX 26/12/2025: Use useMemo to calculate total width once and avoid recalculation on each render
   const totalWidth = useMemo(() => {
     let width = 0;
-    const itemCount = carouselItems.length / 2; // Original items without duplicates
+    const sourceItems = reduceMotion
+      ? carouselItems
+      : carouselItems.slice(0, carouselItems.length / 2);
 
     // Add up widths based on sizes
-    carouselItems.slice(0, itemCount).forEach(item => {
+    sourceItems.forEach(item => {
       const size = item.data.size || 'medium';
       if (size === 'small') width += 280 + 6; // width + margin
       else if (size === 'medium') width += 320 + 6;
@@ -297,7 +296,7 @@ const Testimonials = () => {
     });
 
     return width;
-  }, [carouselItems]);
+  }, [carouselItems, reduceMotion]);
 
   return (
     <section className="relative py-20" id="testimonials">
@@ -333,14 +332,14 @@ const Testimonials = () => {
             {/* FIX 26/12/2025: Removed unused ref={carouselRef} */}
             {/* FIX 26/12/2025: Added CSS variable for scroll width - animation defined in globals.css */}
             <div
-              className="flex items-center"
+              className="flex items-center testimonials-carousel"
               style={{
                 '--scroll-width': `-${totalWidth}px`,
                 animationDuration: '60s',
                 animationTimingFunction: 'linear',
                 animationIterationCount: 'infinite',
-                animationName: 'scroll',
-                animationPlayState: isPaused ? 'paused' : 'running',
+                animationName: reduceMotion ? 'none' : 'scroll',
+                animationPlayState: reduceMotion ? 'paused' : (isPaused ? 'paused' : 'running'),
                 willChange: 'transform'
               } as React.CSSProperties}
             >

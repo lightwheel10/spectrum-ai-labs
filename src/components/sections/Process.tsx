@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 // FIX 26/12/2025: Added useCallback for timer cleanup functions
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
@@ -8,31 +8,31 @@ const tools = {
     name: 'Facebook',
     symbol: '👥',
     color: 'bg-blue-500',
-    logo: 'https://cdn.simpleicons.org/facebook/white'
+    logo: '/logos/tools/facebook.svg'
   },
   zapier: {
     name: 'Zapier',
     symbol: '🔄',
     color: 'bg-orange-500',
-    logo: 'https://cdn.simpleicons.org/zapier/white'
+    logo: '/logos/tools/zapier.svg'
   },
   openai: {
     name: 'OpenAI',
     symbol: '🤖',
     color: 'bg-green-500',
-    logo: 'https://cdn.simpleicons.org/openai/white'
+    logo: '/logos/tools/openai.svg'
   },
   airtable: {
     name: 'Airtable',
     symbol: '⚡',
     color: 'bg-yellow-500',
-    logo: 'https://cdn.simpleicons.org/airtable/white'
+    logo: '/logos/tools/airtable.svg'
   },
   notion: {
     name: 'Notion',
     symbol: '📝',
     color: 'bg-gray-800',
-    logo: 'https://cdn.simpleicons.org/notion/white'
+    logo: '/logos/tools/notion.svg'
   }
 };
 
@@ -93,7 +93,7 @@ const steps = [
                       width={32}
                       height={32}
                       className="w-5 h-5 sm:w-7 sm:h-7 object-contain"
-                      unoptimized={true}
+                      sizes="(max-width: 768px) 20px, 28px"
                     />
                   </div>
                   <span className="text-white/60 text-[10px] sm:text-[13px] mt-3 sm:mt-8">{tool.name}</span>
@@ -311,6 +311,8 @@ const Process = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [direction, setDirection] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [isVisible, setIsVisible] = useState(true);
   
   // Auto-cycle timer ref
   const autoCycleTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -334,8 +336,22 @@ const Process = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   // FIX 26/12/2025: Extracted timer start logic into reusable function to avoid code duplication
   const startAutoCycle = useCallback(() => {
+    if (reduceMotion || !isVisible) return;
+
     // Clear any existing timer first
     if (autoCycleTimerRef.current) {
       clearInterval(autoCycleTimerRef.current);
@@ -350,7 +366,7 @@ const Process = () => {
         return prevStep >= steps.length - 1 ? 0 : prevStep + 1;
       });
     }, 3000); // Change step every 3 seconds
-  }, []);
+  }, [reduceMotion, isVisible]);
 
   // FIX 26/12/2025: Extracted timer stop logic into reusable function
   const stopAutoCycle = useCallback(() => {
@@ -363,13 +379,15 @@ const Process = () => {
   // Auto-cycle effect for both mobile and desktop
   // FIX 26/12/2025: Now uses the extracted functions for cleaner code and proper cleanup
   useEffect(() => {
+    if (reduceMotion || !isVisible) return;
+
     startAutoCycle();
 
     // Clean up on unmount or when dependencies change
     return () => {
       stopAutoCycle();
     };
-  }, [startAutoCycle, stopAutoCycle]);
+  }, [startAutoCycle, stopAutoCycle, reduceMotion, isVisible]);
 
   // Handle pagination for both mobile and desktop
   // FIX 26/12/2025: Uses extracted functions to ensure consistent timer handling
@@ -381,7 +399,9 @@ const Process = () => {
     setActiveStep(index);
 
     // Restart auto-cycle timer after manual interaction
-    startAutoCycle();
+    if (!reduceMotion && isVisible) {
+      startAutoCycle();
+    }
   };
 
   const processContent = useMemo(() => (

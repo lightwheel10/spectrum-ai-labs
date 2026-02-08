@@ -61,6 +61,18 @@ html {
   }
 }
 
+/* Respect reduced-motion at the stylesheet level for CSS keyframes. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .testimonials-carousel {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 /* FIX 26/12/2025: Contact form select styles - moved from dynamic injection to prevent flicker */
 select option {
   background-color: rgba(0, 0, 0, 0.9);

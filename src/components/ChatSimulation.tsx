@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
@@ -154,6 +154,7 @@ const messages = [
 const ChatSimulation = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const reduceMotion = useReducedMotion();
 
   // Intersection Observer to pause animation when off-screen
   useEffect(() => {
@@ -175,11 +176,11 @@ const ChatSimulation = () => {
 
   const containerVariants = {
     animate: {
-      y: isVisible ? [0, -1400] : 0, // Only animate when visible
+      y: !reduceMotion && isVisible ? [0, -1400] : 0,
       transition: {
         duration: 30,
         delay: 0,
-        repeat: isVisible ? Infinity : 0, // Only repeat when visible
+        repeat: !reduceMotion && isVisible ? Infinity : 0,
         repeatDelay: 0,
         ease: "linear"
       }
@@ -212,14 +213,10 @@ const ChatSimulation = () => {
           animate="animate"
           className="space-y-1 sm:space-y-1.5"
         >
-          {/* First set of messages */}
-          {messages.map((message, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, x: message.isAI ? 20 : -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.5 }}
-              className={`flex ${message.isAI ? 'justify-end' : 'justify-start'}`}
+          {(reduceMotion ? messages : [...messages, ...messages]).map((message, index) => (
+            <div
+              key={`chat-row-${index}`}
+              className={`flex ${message.isAI ? 'justify-end' : 'justify-start'} ${index >= messages.length ? 'mt-1 sm:mt-1.5' : ''}`}
             >
               <div className={`flex items-start gap-1 sm:gap-2 max-w-[85%] sm:max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
                 <Avatar isAI={message.isAI} />
@@ -228,29 +225,8 @@ const ChatSimulation = () => {
                   {message.graph && message.graph}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-
-          {/* Duplicate all messages for seamless loop */}
-          <div className="mt-4 sm:mt-6">
-            {messages.map((message, index) => (
-              <motion.div 
-                key={`dup-${index}`}
-                initial={{ opacity: 0, x: message.isAI ? 20 : -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.5 }}
-                className={`flex ${message.isAI ? 'justify-end' : 'justify-start'} mb-1 sm:mb-1.5`}
-              >
-                <div className={`flex items-start gap-1 sm:gap-2 max-w-[85%] sm:max-w-[80%] ${message.isAI ? 'flex-row-reverse' : ''}`}>
-                  <Avatar isAI={message.isAI} />
-                  <div className={`${message.isAI ? 'bg-[#E5855E]/20' : 'bg-white/10'} rounded-xl sm:rounded-2xl p-1.5 sm:p-2`}>
-                    <div className="text-white/80 text-xs sm:text-sm">{message.text}</div>
-                    {message.graph && message.graph}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
       <div className="text-[#E5855E] text-center py-2 sm:py-3 text-xs sm:text-sm">
