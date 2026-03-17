@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 // FIX 26/12/2025: Added AnimatePresence for proper exit animations on mobile menu
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarGlowingButton } from '../ui/GlowingButton';
@@ -101,6 +102,13 @@ const Navbar = () => {
                 className="flex-shrink-0"
               >
                 <Link href="/" className="text-xl font-bold text-white flex items-center gap-2">
+                  <Image
+                    src="/logos/spectrumailabs-logo-removebg.png"
+                    alt="Spectrum AI Labs logo"
+                    width={36}
+                    height={36}
+                    className="w-9 h-9 object-contain"
+                  />
                   <span>Spectrum</span>
                   <span>AI</span>
                   <span>Labs</span>
