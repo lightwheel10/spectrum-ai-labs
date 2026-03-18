@@ -1,4 +1,4 @@
-import { ChatBubbleLeftIcon, MicrophoneIcon, CogIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import { CpuChipIcon, WrenchScrewdriverIcon, ArrowPathRoundedSquareIcon, BeakerIcon } from '@heroicons/react/24/outline';
 import VoiceWaveform from '../VoiceWaveform';
 import ChatSimulation from '../ChatSimulation';
 import WorkflowAnimation from '../WorkflowAnimation';
@@ -25,43 +25,43 @@ interface Service {
 
 const services: Service[] = [
   {
-    title: "AI Chatbots",
-    desc: "Deploy AI agents that handle customer inquiries 24/7, qualify leads automatically, and never take a day off. Reduce support costs by up to 80%.",
-    icon: ChatBubbleLeftIcon,
+    title: "AI Agents & Agentic Workflows",
+    desc: "Deploy intelligent AI agents that reason, plan, and execute complex tasks autonomously. From customer interactions to multi-step business processes, our agents handle it end-to-end — reducing manual effort by up to 80%.",
+    icon: CpuChipIcon,
     demo: {
       type: "chat",
       content: {}
     }
   },
   {
-    title: "Voice Agents",
-    desc: "AI that answers calls, books appointments, and handles customer conversations with human-like fluency. Scale your phone support without hiring.",
-    icon: MicrophoneIcon,
+    title: "AI-Powered Internal Tools",
+    desc: "Custom-built tools that supercharge your team's productivity. From intelligent dashboards to automated reporting systems, we build internal software that thinks — so your team can focus on what matters.",
+    icon: WrenchScrewdriverIcon,
+    steps: [
+      "Team submits a request or query",
+      "AI processes and enriches the data",
+      "Insights delivered to dashboard in real-time"
+    ]
+  },
+  {
+    title: "AI Integration Consulting",
+    desc: "Get a clear roadmap to embed AI across your operations. We audit your workflows, identify high-impact opportunities, and architect integrations that deliver measurable ROI from day one.",
+    icon: ArrowPathRoundedSquareIcon,
+    metrics: {
+      efficiency: "+46%",
+      cost: "-11%",
+      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+    }
+  },
+  {
+    title: "Custom AI Solutions",
+    desc: "Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing — we engineer solutions that off-the-shelf tools can't match.",
+    icon: BeakerIcon,
     demo: {
       type: "voice",
       content: {
         waveform: true
       }
-    }
-  },
-  {
-    title: "Process Automation",
-    desc: "Connect your tools, eliminate manual data entry, and automate repetitive workflows. What takes hours now happens in seconds.",
-    icon: CogIcon,
-    steps: [
-      "New lead comes in via form",
-      "AI enriches and qualifies data",
-      "Auto-routes to CRM + triggers follow-up"
-    ]
-  },
-  {
-    title: "AI Strategy",
-    desc: "Get a roadmap to become AI-first. We audit your operations, identify automation opportunities, and show you exactly where AI delivers the biggest ROI.",
-    icon: ChartBarIcon,
-    metrics: {
-      efficiency: "+46%",
-      cost: "-11%",
-      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
     }
   }
 ];

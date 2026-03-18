@@ -145,7 +145,7 @@ const Testimonials = () => {
   // Twitter-style testimonials
   const twitterTestimonials = [
     {
-      content: "Just implemented @SpectrumAI's chatbot and it's handling 95% of our customer inquiries. Game-changer! #AI #CustomerService",
+      content: "Just deployed @SpectrumAI's AI agent and it's handling 95% of our customer inquiries autonomously. Game-changer! #AI #CustomerService",
       name: "Sarah Johnson",
       handle: "sarahj_cxo",
       image: "https://randomuser.me/api/portraits/women/68.jpg?seed=testimonial-1",
@@ -153,7 +153,7 @@ const Testimonials = () => {
       size: 'small' as const,
     },
     {
-      content: "The voice agent from @SpectrumAI sounds so human it's crazy. Our customers love it and our call handling has improved dramatically. Highly recommend! 🔥",
+      content: "The AI agent from @SpectrumAI is incredible. It reasons through complex customer issues like a human would. Our resolution rate is through the roof. Highly recommend! 🔥",
       name: "Michael Chen",
       handle: "mchen_innovex",
       image: "https://randomuser.me/api/portraits/men/75.jpg?seed=testimonial-2",
@@ -177,7 +177,7 @@ const Testimonials = () => {
       size: 'medium' as const,
     },
     {
-      content: "After 3 months with @SpectrumAI's automation tools, we've cut processing time by 78%! Our team can finally focus on strategic work.",
+      content: "After 3 months with @SpectrumAI's internal tools, we've cut processing time by 78%! Our team can finally focus on strategic work.",
       name: "Carlos Rodriguez",
       handle: "carlos_tech",
       image: "https://randomuser.me/api/portraits/men/45.jpg?seed=testimonial-5",
@@ -197,7 +197,7 @@ const Testimonials = () => {
   // LinkedIn-style testimonials
   const linkedinTestimonials = [
     {
-      content: "After implementing Spectrum AI's workflow automation, we've seen a 54% increase in productivity across our team. Their solution eliminated busywork from our operations. The ROI has been incredible!",
+      content: "After implementing Spectrum AI's agentic workflows, we've seen a 54% increase in productivity across our team. Their solution eliminated busywork from our operations. The ROI has been incredible!",
       name: "John Fisher",
       role: "CEO",
       company: "T&B Real Estate",
@@ -206,7 +206,7 @@ const Testimonials = () => {
       size: 'large' as const,
     },
     {
-      content: "Spectrum AI's consulting team identified $2M in potential savings for our organization! They found automation opportunities we never thought of. Implementation was smooth and the results speak for themselves.",
+      content: "Spectrum AI's consulting team identified $2M in potential savings for our organization! They found AI integration opportunities we never thought of. Implementation was smooth and the results speak for themselves.",
       name: "Emma Wilson",
       role: "CFO",
       company: "TechFlow",
@@ -215,7 +215,7 @@ const Testimonials = () => {
       size: 'medium' as const,
     },
     {
-      content: "Working with Spectrum AI transformed our customer support. Their AI-powered solution reduced response times by 65% while maintaining high customer satisfaction scores. The team was responsive throughout.",
+      content: "Working with Spectrum AI transformed our customer support. Their AI agents reduced response times by 65% while maintaining high customer satisfaction scores. The team was responsive throughout.",
       name: "Jamal Washington",
       role: "Director of Customer Experience",
       company: "Nexus Solutions",

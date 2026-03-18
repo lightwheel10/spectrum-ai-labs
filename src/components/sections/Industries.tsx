@@ -325,19 +325,19 @@ const industries = [
     icon: <FaShoppingCart size={32} />,
     solutions: [
       {
-        title: "Chatbots",
+        title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Our e-commerce chatbots handle product inquiries, provide real-time inventory status, process returns, and offer personalized product recommendations based on shopping history."
+        description: "Intelligent AI agents that handle product inquiries, provide real-time inventory status, process returns, and deliver personalized recommendations — autonomously managing the entire customer journey."
       },
       {
-        title: "AI Voice Agent",
-        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Voice agents that handle order tracking, process refunds, and provide shipping updates. They can even help customers find the right product size or color through natural conversation."
-      },
-      {
-        title: "Automations",
+        title: "Internal Tools",
         icon: <RiRobot2Fill className="text-[#E5855E]" size={24} />,
-        description: "Automated inventory syncing across platforms, dynamic pricing adjustments, order fulfillment workflows, and automated email marketing based on customer behavior."
+        description: "Custom dashboards for inventory forecasting, automated pricing engines, and smart order management tools that give your team real-time insights and eliminate manual data entry."
+      },
+      {
+        title: "Custom Solutions",
+        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
+        description: "Purpose-built AI for demand prediction, dynamic pricing optimization, and multi-channel inventory syncing — tailored to your specific e-commerce stack and scale."
       }
     ]
   },
@@ -346,19 +346,19 @@ const industries = [
     icon: <BiBuildingHouse size={32} />,
     solutions: [
       {
-        title: "Chatbots",
+        title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Property-specific chatbots that provide instant property details, schedule viewings, calculate mortgage payments, and qualify leads based on requirements and budget."
+        description: "AI agents that qualify leads, schedule viewings, answer property questions, and follow up with prospects — handling the entire pipeline from inquiry to showing."
       },
       {
-        title: "AI Voice Agent",
-        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Voice agents that conduct initial property inquiries, schedule property tours, and provide neighborhood statistics and market trends through natural conversation."
-      },
-      {
-        title: "Automations",
+        title: "Internal Tools",
         icon: <RiRobot2Fill className="text-[#E5855E]" size={24} />,
-        description: "Automated listing updates across platforms, tenant screening workflows, rent collection reminders, and maintenance request processing systems."
+        description: "Smart CRM dashboards, automated listing management across platforms, and tenant screening tools that streamline your operations and reduce administrative overhead."
+      },
+      {
+        title: "Custom Solutions",
+        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
+        description: "AI-powered property valuation models, market trend analysis engines, and intelligent lead scoring systems built specifically for your real estate portfolio."
       }
     ]
   },
@@ -367,19 +367,19 @@ const industries = [
     icon: <GiScales size={32} />,
     solutions: [
       {
-        title: "Chatbots",
+        title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Legal chatbots that handle client intake, document basic legal queries, schedule consultations, and help clients understand their legal rights and options."
+        description: "AI agents that handle client intake, answer preliminary legal questions, schedule consultations, and manage case updates — while maintaining strict confidentiality."
       },
       {
-        title: "AI Voice Agent",
-        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Voice agents that conduct preliminary case assessments, schedule court date reminders, and provide case status updates while maintaining client confidentiality."
-      },
-      {
-        title: "Automations",
+        title: "Internal Tools",
         icon: <RiRobot2Fill className="text-[#E5855E]" size={24} />,
-        description: "Automated legal document generation, court filing deadline tracking, billing and time tracking systems, and client communication workflows."
+        description: "Intelligent document review tools, automated deadline tracking dashboards, and smart billing systems that let your team focus on practicing law, not paperwork."
+      },
+      {
+        title: "Custom Solutions",
+        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
+        description: "AI-powered contract analysis, legal research assistants with RAG pipelines, and automated document generation systems tailored to your practice areas."
       }
     ]
   },
@@ -388,19 +388,19 @@ const industries = [
     icon: <BsCashCoin size={32} />,
     solutions: [
       {
-        title: "Chatbots",
+        title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Financial chatbots that handle account inquiries, assist with loan applications, provide investment advice, and help with budgeting and expense tracking."
+        description: "AI agents that handle account inquiries, assist with applications, provide portfolio insights, and flag anomalies — managing complex financial workflows end-to-end."
       },
       {
-        title: "AI Voice Agent",
-        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Voice agents that process fund transfers, provide real-time market updates, handle credit card services, and assist with fraud detection and reporting."
-      },
-      {
-        title: "Automations",
+        title: "Internal Tools",
         icon: <RiRobot2Fill className="text-[#E5855E]" size={24} />,
-        description: "Automated transaction reconciliation, risk assessment workflows, compliance monitoring systems, and personalized financial report generation."
+        description: "Automated reconciliation dashboards, risk assessment tools, and compliance monitoring systems that give your team real-time visibility into every transaction."
+      },
+      {
+        title: "Custom Solutions",
+        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
+        description: "Purpose-built fraud detection models, predictive analytics for market trends, and AI-driven credit scoring systems engineered for your regulatory environment."
       }
     ]
   },
@@ -409,19 +409,19 @@ const industries = [
     icon: <FaHospital size={32} />,
     solutions: [
       {
-        title: "Chatbots",
+        title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Healthcare chatbots that handle appointment scheduling, symptom assessment, medication reminders, and provide post-care instructions while ensuring HIPAA compliance."
+        description: "HIPAA-compliant AI agents that manage appointment scheduling, handle patient inquiries, process prescription refills, and provide post-care follow-ups autonomously."
       },
       {
-        title: "AI Voice Agent",
-        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Voice agents that manage prescription refills, provide lab results, conduct follow-up assessments, and offer 24/7 nurse triage support."
-      },
-      {
-        title: "Automations",
+        title: "Internal Tools",
         icon: <RiRobot2Fill className="text-[#E5855E]" size={24} />,
-        description: "Automated patient record management, insurance verification workflows, appointment reminder systems, and medical billing processes."
+        description: "Smart patient intake dashboards, automated insurance verification tools, and intelligent scheduling systems that reduce wait times and administrative burden."
+      },
+      {
+        title: "Custom Solutions",
+        icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
+        description: "AI-powered diagnostic assistants, clinical data analysis pipelines, and patient risk stratification models built to meet healthcare compliance standards."
       }
     ]
   }
@@ -580,9 +580,9 @@ const Industries = () => {
               transition={{ delay: index * 0.08 }}
               className="bg-black/20 rounded-lg p-4 sm:p-6 lg:p-8 relative"
             >
-              <SolutionVisual 
-                type={solution.title.toLowerCase().includes('chat') ? 'chat' : 
-                      solution.title.toLowerCase().includes('voice') ? 'voice' : 'automation'} 
+              <SolutionVisual
+                type={solution.title === 'AI Agents' ? 'chat' :
+                      solution.title === 'Custom Solutions' ? 'voice' : 'automation'}
                 industry={industries[activeIndex].name as IndustryName}
               />
               <div className="flex items-center justify-center mt-6 sm:mt-8 mb-2 sm:mb-4">

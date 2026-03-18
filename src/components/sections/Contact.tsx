@@ -315,10 +315,10 @@ const Contact = () => {
                     style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23E5855E' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: "right 0.5rem center", backgroundRepeat: "no-repeat", backgroundSize: "1.5em 1.5em", paddingRight: "2.5rem" }}
                   >
                     <option value="" disabled>Select a project type</option>
-                    <option value="chatbot">Chatbot Development</option>
-                    <option value="voice">Voice Agent</option>
-                    <option value="automation">Workflow Automation</option>
-                    <option value="consulting">AI Consulting</option>
+                    <option value="ai-agents">AI Agents & Agentic Workflows</option>
+                    <option value="internal-tools">AI-Powered Internal Tools</option>
+                    <option value="consulting">AI Integration Consulting</option>
+                    <option value="custom-solutions">Custom AI Solutions</option>
                     <option value="other">Other</option>
                   </select>
                 </div>

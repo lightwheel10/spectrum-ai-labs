@@ -6,24 +6,24 @@ Spectrum AI Labs is an AI automation agency that helps businesses implement AI i
 
 ## What We Do
 
-- Implement AI into existing business processes
-- Create new AI-powered workflows from scratch
-- Help businesses become AI-first
-- Provide strategic AI consulting
+- Build AI agents and agentic workflows for businesses
+- Create AI-powered internal tools
+- Provide AI integration consulting
+- Engineer custom AI solutions
 
 ## Services
 
-### AI Process Implementation
-Integrate AI into your existing business processes. We analyze your current workflows and identify opportunities to automate tasks, improve accuracy, and reduce costs.
+### AI Agents & Agentic Workflows
+Deploy intelligent AI agents that reason, plan, and execute complex tasks autonomously. From customer interactions to multi-step business processes, our agents handle it end-to-end.
 
-### AI Workflow Creation
-Design and build new AI-powered workflows tailored to your specific business needs. From chatbots to voice agents to complex automation pipelines.
+### AI-Powered Internal Tools
+Custom-built tools that supercharge your team's productivity. From intelligent dashboards to automated reporting systems, we build internal software that thinks.
 
-### AI-First Transformation
-Strategic guidance to help your entire business adopt AI across operations. We create roadmaps and implementation plans for complete AI transformation.
+### AI Integration Consulting
+Get a clear roadmap to embed AI across your operations. We audit your workflows, identify high-impact opportunities, and architect integrations that deliver measurable ROI.
 
-### AI Consulting
-Expert consulting to identify AI opportunities, evaluate solutions, and create implementation strategies that align with your business goals.
+### Custom AI Solutions
+Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing — we engineer solutions that off-the-shelf tools can't match.
 
 ## Industries We Serve
 
@@ -32,7 +32,6 @@ Expert consulting to identify AI opportunities, evaluate solutions, and create i
 - E-commerce
 - Real Estate
 - Legal
-- Manufacturing
 
 ## Contact
 

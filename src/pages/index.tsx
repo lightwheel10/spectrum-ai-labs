@@ -32,7 +32,7 @@ export default function Home() {
       <Head>
         <title>Spectrum AI Labs | AI Automation Agency - Make Your Business AI-First</title>
         <meta name="description" content="AI automation agency helping businesses go AI-first. We implement AI into existing processes, build new AI-powered workflows, and provide strategic consulting to transform your operations." />
-        <meta name="keywords" content="AI automation agency, AI implementation, business process automation, AI consulting, workflow automation, AI integration, AI-first business, AI transformation, process optimization" />
+        <meta name="keywords" content="AI agents, agentic workflows, AI-powered internal tools, AI integration consulting, custom AI solutions, AI automation agency, AI-first business, AI transformation" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
