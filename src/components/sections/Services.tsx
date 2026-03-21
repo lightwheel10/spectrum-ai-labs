@@ -116,7 +116,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
                 <VoiceWaveform />
               </div>
               <div className="text-[#E5855E] text-center py-2 sm:py-3 text-sm">
-                Voice Agent
+                Custom AI
               </div>
             </>
           ) : (
