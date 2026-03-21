@@ -26,7 +26,7 @@ interface Service {
 const services: Service[] = [
   {
     title: "AI Agents & Agentic Workflows",
-    desc: "Deploy intelligent AI agents that reason, plan, and execute complex tasks autonomously. From customer interactions to multi-step business processes, our agents handle it end-to-end — reducing manual effort by up to 80%.",
+    desc: "Deploy intelligent AI agents that reason, plan, and execute complex tasks autonomously. From customer interactions to multi-step business processes, our agents handle it end-to-end, reducing manual effort by up to 80%.",
     icon: CpuChipIcon,
     demo: {
       type: "chat",
@@ -35,7 +35,7 @@ const services: Service[] = [
   },
   {
     title: "AI-Powered Internal Tools",
-    desc: "Custom-built tools that supercharge your team's productivity. From intelligent dashboards to automated reporting systems, we build internal software that thinks — so your team can focus on what matters.",
+    desc: "Custom-built tools that supercharge your team's productivity. From intelligent dashboards to automated reporting systems, we build internal software that thinks, so your team can focus on what matters.",
     icon: WrenchScrewdriverIcon,
     steps: [
       "Team submits a request or query",
@@ -55,7 +55,7 @@ const services: Service[] = [
   },
   {
     title: "Custom AI Solutions",
-    desc: "Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing — we engineer solutions that off-the-shelf tools can't match.",
+    desc: "Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing, we engineer solutions that off-the-shelf tools can't match.",
     icon: BeakerIcon,
     demo: {
       type: "voice",

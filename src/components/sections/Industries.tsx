@@ -327,7 +327,7 @@ const industries = [
       {
         title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "Intelligent AI agents that handle product inquiries, provide real-time inventory status, process returns, and deliver personalized recommendations — autonomously managing the entire customer journey."
+        description: "Intelligent AI agents that handle product inquiries, provide real-time inventory status, process returns, and deliver personalized recommendations,autonomously managing the entire customer journey."
       },
       {
         title: "Internal Tools",
@@ -337,7 +337,7 @@ const industries = [
       {
         title: "Custom Solutions",
         icon: <FaMicrophone className="text-[#E5855E]" size={24} />,
-        description: "Purpose-built AI for demand prediction, dynamic pricing optimization, and multi-channel inventory syncing — tailored to your specific e-commerce stack and scale."
+        description: "Purpose-built AI for demand prediction, dynamic pricing optimization, and multi-channel inventory syncing,tailored to your specific e-commerce stack and scale."
       }
     ]
   },
@@ -348,7 +348,7 @@ const industries = [
       {
         title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "AI agents that qualify leads, schedule viewings, answer property questions, and follow up with prospects — handling the entire pipeline from inquiry to showing."
+        description: "AI agents that qualify leads, schedule viewings, answer property questions, and follow up with prospects,handling the entire pipeline from inquiry to showing."
       },
       {
         title: "Internal Tools",
@@ -369,7 +369,7 @@ const industries = [
       {
         title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "AI agents that handle client intake, answer preliminary legal questions, schedule consultations, and manage case updates — while maintaining strict confidentiality."
+        description: "AI agents that handle client intake, answer preliminary legal questions, schedule consultations, and manage case updates,while maintaining strict confidentiality."
       },
       {
         title: "Internal Tools",
@@ -390,7 +390,7 @@ const industries = [
       {
         title: "AI Agents",
         icon: <HiLink className="text-[#E5855E]" size={24} />,
-        description: "AI agents that handle account inquiries, assist with applications, provide portfolio insights, and flag anomalies — managing complex financial workflows end-to-end."
+        description: "AI agents that handle account inquiries, assist with applications, provide portfolio insights, and flag anomalies,managing complex financial workflows end-to-end."
       },
       {
         title: "Internal Tools",

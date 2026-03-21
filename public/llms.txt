@@ -23,7 +23,7 @@ Custom-built tools that supercharge your team's productivity. From intelligent d
 Get a clear roadmap to embed AI across your operations. We audit your workflows, identify high-impact opportunities, and architect integrations that deliver measurable ROI.
 
 ### Custom AI Solutions
-Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing — we engineer solutions that off-the-shelf tools can't match.
+Purpose-built AI systems tailored to your unique challenges. From RAG pipelines and fine-tuned models to real-time data processing,we engineer solutions that off-the-shelf tools can't match.
 
 ## Industries We Serve
 
