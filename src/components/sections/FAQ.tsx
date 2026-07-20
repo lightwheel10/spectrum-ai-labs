@@ -53,15 +53,15 @@ const FAQ = () => {
   const faqItems = [
     {
       question: "What makes Spectrum AI Labs unique?",
-      answer: "Our AI solutions are built with cutting-edge technology and deep industry expertise to create truly tailored solutions. With a team of 9 experts, we focus on delivering higher accuracy and faster results than conventional approaches, making your organization more competitive in today's market."
+      answer: "Our AI solutions are built with cutting-edge technology and deep industry expertise to create truly tailored solutions. You work directly with the people building your solution, no middlemen and no handoffs, with a focus on delivering higher accuracy and faster results than conventional approaches."
     },
     {
       question: "Is my company a good fit for Spectrum AI Labs?",
       answer: "We work with businesses across various industries including E-commerce, Real Estate, Legal, Finance, and Healthcare. If you're looking to leverage AI to improve efficiency, automate workflows, enhance customer interactions, or gain insights from your data, we're likely a good fit. Our team can assess your specific needs during a consultation."
     },
     {
-      question: "How does your subscription model work?",
-      answer: "We offer flexible subscription plans starting at $1997/month for our Starter plan, which includes 1 dedicated AI developer. Our Professional plan at $3997/month includes 2 dedicated developers and more advanced features. For larger organizations, we offer custom Enterprise solutions. All plans include the ability to cancel or pause anytime."
+      question: "How does your pricing work?",
+      answer: "Pricing depends on the scope of what we build and manage for you. After a short consultation, we give you a clear, fixed quote with no hidden fees, and you can pause or cancel anytime. Book a call and we'll tell you exactly what your project would cost."
     },
     {
       question: "How long does the development phase take?",
@@ -69,7 +69,7 @@ const FAQ = () => {
     },
     {
       question: "Do you provide support after implementation?",
-      answer: "Absolutely. We offer comprehensive post-implementation support including technical assistance, training, and ongoing optimization. Our subscription model ensures continuous improvement of your AI solutions, and our team remains available to ensure your technology evolves with your business needs."
+      answer: "Absolutely. We offer comprehensive post-implementation support including technical assistance, training, and ongoing optimization. Our ongoing partnership ensures continuous improvement of your AI solutions, and our team remains available to ensure your technology evolves with your business needs."
     }
   ];
 

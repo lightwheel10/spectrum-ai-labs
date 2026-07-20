@@ -20,9 +20,9 @@ const Hero = dynamic(() => import('../components/sections/Hero'), { ssr: true })
 const About = dynamic(() => import('../components/sections/About'), { ssr: true });
 const Services = dynamic(() => import('../components/sections/Services'), { ssr: true });
 const Process = dynamic(() => import('../components/sections/Process'), { ssr: true });
-const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: false });
+const Industries = dynamic(() => import('../components/sections/Industries'), { ssr: true });
 const Founder = dynamic(() => import('../components/sections/Founder'), { ssr: true });
-const Testimonials = dynamic(() => import('../components/sections/Testimonials'), { ssr: false });
+const Commitments = dynamic(() => import('../components/sections/Commitments'), { ssr: true });
 const FAQ = dynamic(() => import('../components/sections/FAQ'), { ssr: true });
 const Contact = dynamic(() => import('../components/sections/Contact'), { ssr: true });
 
@@ -30,8 +30,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Spectrum AI Labs | AI Automation Agency - Make Your Business AI-First</title>
-        <meta name="description" content="AI automation agency helping businesses go AI-first. We implement AI into existing processes, build new AI-powered workflows, and provide strategic consulting to transform your operations." />
+        <title>Spectrum AI Labs | AI Automation Agency &amp; AI Agents</title>
+        <meta name="description" content="AI automation agency helping businesses go AI-first. We build AI agents, automate workflows, and integrate AI into your operations. Book a free consultation." />
         <meta name="keywords" content="AI agents, agentic workflows, AI-powered internal tools, AI integration consulting, custom AI solutions, AI automation agency, AI-first business, AI transformation" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
@@ -47,7 +47,7 @@ export default function Home() {
         <meta property="og:url" content="https://www.spectrumailabs.com/" />
         <meta property="og:title" content="Spectrum AI Labs | AI Automation Agency" />
         <meta property="og:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
-        <meta property="og:image" content="https://www.spectrumailabs.com/og-image.png" />
+        <meta property="og:image" content="https://www.spectrumailabs.com/og-image.jpg" />
         <meta property="og:site_name" content="Spectrum AI Labs" />
 
         {/* Twitter */}
@@ -55,7 +55,7 @@ export default function Home() {
         <meta name="twitter:url" content="https://www.spectrumailabs.com/" />
         <meta name="twitter:title" content="Spectrum AI Labs | AI Automation Agency" />
         <meta name="twitter:description" content="We help businesses go AI-first. Implement AI into existing processes, build new AI-powered workflows, and get strategic consulting." />
-        <meta name="twitter:image" content="https://www.spectrumailabs.com/og-image.png" />
+        <meta name="twitter:image" content="https://www.spectrumailabs.com/og-image.jpg" />
         <meta name="twitter:creator" content="@buildwithparas" />
 
         {/* Structured Data */}
@@ -116,7 +116,7 @@ export default function Home() {
                   "name": "What makes Spectrum AI Labs unique?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Our AI solutions are built with cutting-edge technology and deep industry expertise to create truly tailored solutions. With a team of 9 experts, we focus on delivering higher accuracy and faster results than conventional approaches, making your organization more competitive in today's market."
+                    "text": "Our AI solutions are built with cutting-edge technology and deep industry expertise to create truly tailored solutions. You work directly with the people building your solution, no middlemen and no handoffs, with a focus on delivering higher accuracy and faster results than conventional approaches."
                   }
                 },
                 {
@@ -129,10 +129,10 @@ export default function Home() {
                 },
                 {
                   "@type": "Question",
-                  "name": "How does your subscription model work?",
+                  "name": "How does your pricing work?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "We offer flexible subscription plans starting at $1997/month for our Starter plan, which includes 1 dedicated AI developer. Our Professional plan at $3997/month includes 2 dedicated developers and more advanced features. For larger organizations, we offer custom Enterprise solutions. All plans include the ability to cancel or pause anytime."
+                    "text": "Pricing depends on the scope of what we build and manage for you. After a short consultation, we give you a clear, fixed quote with no hidden fees, and you can pause or cancel anytime. Book a call and we'll tell you exactly what your project would cost."
                   }
                 },
                 {
@@ -148,7 +148,7 @@ export default function Home() {
                   "name": "Do you provide support after implementation?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Absolutely. We offer comprehensive post-implementation support including technical assistance, training, and ongoing optimization. Our subscription model ensures continuous improvement of your AI solutions, and our team remains available to ensure your technology evolves with your business needs."
+                    "text": "Absolutely. We offer comprehensive post-implementation support including technical assistance, training, and ongoing optimization. Our ongoing partnership ensures continuous improvement of your AI solutions, and our team remains available to ensure your technology evolves with your business needs."
                   }
                 }
               ]
@@ -182,8 +182,8 @@ export default function Home() {
           <Industries />
         </section>
 
-        <section id="testimonials">
-          <Testimonials />
+        <section id="why-us">
+          <Commitments />
         </section>
 
         <section id="founder">
